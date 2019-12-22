@@ -1,0 +1,86 @@
+\begin{frame}[t]{Definitions}
+\begin{itemize}
+\uncover<1->{\item The SAT Problem (\textbf{SAT}).}
+\uncover<2->{\item Counting SAT Problem (\textbf{\#SAT}).}
+
+
+\uncover<6->{\item Negation Normal Form (\textbf{NNF}).}
+\uncover<7->{\item Decomposable Negation Normal Form (\textbf{DNNF}).}
+\uncover<8->{\item deterministic Decomposable Negation Normal Form (\textbf{d-DNNF}).}
+\uncover<9->{\item decision Decomposable Negation Normal Form (\textbf{dec-DNNF}).}
+\end{itemize}
+\vspace{1cm}
+
+\only<1>{
+\begin{block}{SAT}
+\begin{itemize}
+\item[--] Given a Boolean formula $\phi$ of $n$ variables.
+\item[?] Find an assignment that satisfies $\phi$.
+\end{itemize}
+\end{block}
+}
+
+\only<2>{
+\begin{block}{\#SAT}
+\begin{itemize}
+\item[--] Given a Boolean formula $\phi$ of $n$ variables.
+\item[?] How many assignments in $2^{\mathrm{Var}(\phi)}$ satisfy $\phi$?
+\end{itemize}
+\end{block}
+}
+
+\only<3-4>{
+\begin{block}{Notation}
+Let $\mathrm{SAT}(\chi) \subseteq 2^{\mathrm{VAR}(\chi)}$ be the set of all satisfying assignments of $\chi$
+\vspace{-0.3cm}
+$$\mathrm{SAT}(\chi) = \{\rho:\mathrm{VAR}(\chi) \rightarrow \{0, 1\} : \rho(\chi) = 1\}.$$
+\vspace{-0.8cm}
+\uncover<4->{$$\text{SAT: Is } \mathrm{SAT}(\phi) = \emptyset.
+\qquad \qquad \qquad
+\text{\#SAT: Find } |\mathrm{SAT}(\phi)|.$$}
+\vspace{-0.6cm}
+\end{block}
+}
+
+\only<5>{
+\begin{block}{Example}
+$$\phi = X_1 \land (X_2 \lor \lnot X_3)$$
+Clearly, \#SAT($\phi$) = 3.
+\end{block}
+}
+
+\only<6>{
+\begin{block}{Negation Normal Form}
+A Boolean formula $\phi$ is in NNF form, if it contains only disjunctions and conjunctions over a set of positive and(or) negative literals.
+
+\textbf{Example.} $\phi = X_1 \lor \lnot X_2$.
+\end{block}
+}
+
+\only<7>{
+\begin{block}{Decomposable Negation Normal Form}
+A Boolean formula $\phi$ is in DNNF, if it is in NNF and for each conjunction subformula $phi' := \psi_1 \land \psi_2$ we have $\mathrm{VAR}(\psi_1) \cap \mathrm{VAR}(\psi_2) = \emptyset$.
+\end{block}
+}
+
+\only<8>{
+\begin{block}{deterministic Decomposable Negation Normal Form}
+A Boolean formula $\phi$ is in d-DNNF, if it is in DNNF and for each disjunction subformula  $\phi' = \psi_1 \lor \psi_2$ we have $\mathrm{SAT}(\psi_1) \cap \mathrm{SAT}(\psi_2) = \emptyset$.
+\end{block}
+}
+
+\only<9->{
+\begin{block}{decision Decomposable Negation Normal Form}
+A Boolean formula $\phi$ is in dec-DNNF, if it is in DNNF and each disjunction subformula  $\phi'$ is of the form $\phi' = (X \land \psi_1) \lor (\lnot X \land \psi_2)$ for some variable $X \in \mathrm{VAR}(\phi)$.
+
+\uncover<10>{\textbf{Note.} Each dec-DNNF is a d-DNNF.}
+\end{block}
+}
+\end{frame}
+
+\begin{frame}[t]{Structuredness of a formula}
+\end{frame}
+
+\begin{frame}[t]{Hypergraphs and $\beta$-acyclic graphs}
+\end{frame}
+
