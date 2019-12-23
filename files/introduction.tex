@@ -79,8 +79,99 @@ A Boolean formula $\phi$ is in dec-DNNF, if it is in DNNF and each disjunction s
 \end{frame}
 
 \begin{frame}[t]{Structuredness of a formula}
+	\begin{itemize}[<+->]
+		\item Let $\phi$ be a DNNF formula and let $V := \mathrm{VAR}(\phi)$.
+		\item A \textbf{$\mathbf{v}$Tree} $T$ is a binary tree where the leaves of the tree has a one-to-one correspondence to the variables of $\phi$.
+		\item The formula $\phi$ respects $T$ if and only if for each subformula of  $\phi$ of the form $\phi' := \psi_1 \land \psi_2$, there is a vertex $v \in V(T)$ with two children $v_1, v_2$, where $\mathrm{VAR}(\psi_1)\subseteq V(T_{v_1})$ and $\mathrm{VAR}(\psi_2) \subseteq V(T_{v_2})$, where $T_v$ is the subtree of $T$ rooted at $v$. We say $\phi'$ respects $v$ in this case.
+		\item A formula $\phi$ is structured, if there is a $v$tree $T$ over the vertices of $\phi$, such that $\phi$ respects $T$.
+	\end{itemize}
+
+	\uncover<3->{
+	\begin{minipage}{.49\linewidth}
+		$$(x\land(y\lor z)) \lor (z \textcolor{red}{\bm{\land}} \lnot x)$$
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\linewidth}
+		\centering
+		\includegraphics[width=.6\linewidth]{figures/vtree.eps}
+	\end{minipage}
+	}
 \end{frame}
 
 \begin{frame}[t]{Hypergraphs and $\beta$-acyclic graphs}
+	\begin{minipage}{.59\linewidth}
+	\begin{itemize}
+		\item Hypergraphs
+			\begin{itemize}
+				\item A set of vertices $V$.
+				\item Edges are subsets of $V$.
+			\end{itemize}
+		\item Different ways to translate
+		\item[] \hspace{1cm} to hypergraphs.
+		\item $\beta$ acyaclic hypergraphs.
+			\begin{itemize}
+				\item Defined on the edges.
+				\item Let $\rho := v_1, \dots v_n$ be an
+				\item[] \hspace{1cm}enumeration of the vertices.
+				\item $\rho$ is an elimination, if for all edges
+				\item[] \hspace{1cm}$e_1$ and $e_2$ and $v_i \in e_1 \cap e_2$,
+				\item[]\hspace{1cm}$e_{1|\geq i} \subseteq e_2$ or $e_{2|\geq i} \subseteq e_1$.
+				\item A hypergraph is $\beta$-acyclic,
+				\item[] \hspace{1cm} if it admits an elimination.
+
+			\end{itemize}
+	\end{itemize}
+\end{minipage}
+\begin{minipage}{.39\linewidth}
+\centering
+	\begin{tikzpicture}
+    \node (v1) at (1,2) {};
+    \node (v2) at (1.5,3) {};
+    \node (v3) at (4,2.5) {};
+    \node (v4) at (2,1) {};
+    \node (v5) at (3.5,0.5) {};
+
+    \begin{scope}[fill opacity=0.8]
+    \filldraw[fill=yellow!50] ($(v1)+(-0.5,0)$) 
+        to[out=90,in=180] ($(v2) + (0,0.5)$) 
+        to[out=0,in=90] ($(v3) + (1,0)$)
+        to[out=270,in=0] ($(v2) + (1,-0.8)$)
+        to[out=180,in=270] ($(v1)+(-0.5,0)$);
+    \filldraw[fill=blue!70] ($(v4)+(-0.5,0.2)$)
+        to[out=90,in=180] ($(v4)+(0,1)$)
+        to[out=0,in=90] ($(v4)+(0.6,0.3)$)
+        to[out=270,in=0] ($(v4)+(0,-0.6)$)
+        to[out=180,in=270] ($(v4)+(-0.5,0.2)$);
+
+    \filldraw[fill=green!80] ($(v3)+(-0.5,-0.2)$) 
+        to[out=90,in=180] ($(v3) + (0.2,0.4)$) 
+        to[out=0,in=90] ($(v5) + (0.3,-0.1)$)
+        to[out=270,in=0] ($(v5) + (0,-0.3)$)
+        to[out=180,in=270] ($(v3)+(-0.5,-0.2)$);
+
+    \filldraw[fill=red!40] ($(v2)+(-0.5,-0.2)$) 
+        to[out=90,in=180] ($(v2) + (0.2,0.4)$) 
+        to[out=0,in=180] ($(v3) + (0,0.3)$)
+        to[out=0,in=90] ($(v3) + (0.3,-0.1)$)
+        to[out=270,in=0] ($(v3) + (0,-0.3)$)
+        to[out=180,in=0] ($(v3) + (-1.3,0)$)
+        to[out=180,in=270] ($(v2)+(-0.5,-0.2)$);
+    \end{scope}
+
+    \foreach \v in {1,2,...,5} {
+        \fill (v\v) circle (0.1);
+    }
+
+    \fill (v1) circle (0.1) node [right] {$v_1$};
+    \fill (v2) circle (0.1) node [below left] {$v_2$};
+    \fill (v3) circle (0.1) node [left] {$v_3$};
+    \fill (v4) circle (0.1) node [right] {$v_4$};
+    \fill (v5) circle (0.1) node [above] {$v_5$};
+
+    \node at (3.8,3.2) {$e_1$};
+    \node at (2.3,3) {$e_2$};
+    \node at (3.9,1.5) {$e_3$};
+\end{tikzpicture}
+\end{minipage}
 \end{frame}
 
