@@ -1,0 +1,53 @@
+\begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
+	\begin{itemize}
+		\item We fix a $\beta$-acyclic graph $\mathcal{H}$ and an elimination-ordering $\leq$ on $\mathcal{H}$.
+		\item Let $v_1, \dots v_n$ be an enumeration of the vertices in $\mathcal{H}$ according to $\leq$.
+		\item $V_{\leq v_i} := \{v_j ; j\leq i\}$.
+		\item For two edge $e, f \in \mathcal{H}$, $e < f$ if and only if $\max\{e \Delta f\}\in f$
+	\end{itemize}
+	\begin{block}{Lemma (lemma 2)}
+		For $x,y \in V(\mathcal{H}), x \leq y$ and for $e, f \in \mathcal{H}, e \leq f$,
+			$$\text{if } V(\mathcal{H}^x_e)\cap V(\mathcal{H}^y_f)\cap V_{\leq x} \neq \emptyset,
+			\text{ then } \mathcal{H}^x_e \subseteq \mathcal{H}^y_f.$$
+		In particular, for all $y$,
+		$$\text{if } e \in \mathcal{H}^y_f, \text{ then } \mathcal{H}^y_e \subseteq \mathcal{H}^y_f$$
+	\end{block}
+\end{frame}
+
+\begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
+	\begin{block}{Lemma (lemma 4)}
+		For $e, f \in \mathcal{H}, e\leq f$, If there exists a vertex $x \in V(\mathcal{H})$, such that $x \in e \cap f$, then $e \cap V_{\geq x} \subseteq f$.
+	\end{block}
+\end{frame}
+
+\begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
+	A decreasing path from $e$ to $f$ is a path $(e_0, x_0, e_1, v_1 \dots v_{l-1}, e_n)$, such that 
+	\begin{block}{Lemma (lemma 5)}
+		For $x \in V(\mathcal{H}), e \in \mathcal{H}$ and $f \in \mathcal{H}^x_e$, there exists a decreasing path from $e$ to $f$ going through vertices smaller than $x$.
+	\end{block}
+	Proof sketch. Any shortest path from $e$ to $f$ is decreasing. A path exists by definition [see below].
+
+\end{frame}
+
+\begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
+	\begin{block}{Theorem (theorem 3)}
+		For every $x \in V(\mathcal{H})$ and $e \in \mathcal{H}, V(\mathcal{H}^x_e) \cap V_{\geq x} \subseteq e$
+	\end{block}
+
+	[figure]
+
+	[why do we need this]
+\end{frame}
+
+
+\begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
+	\begin{block}{Lemma (lemma 6)}
+	\end{block}
+	\begin{block}{Corollary (corollary 7)}
+	\end{block}
+\end{frame}
+
+\begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
+	\begin{block}{Theorem (theorem 8)}
+	\end{block}
+\end{frame}
