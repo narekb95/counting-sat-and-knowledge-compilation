@@ -14,8 +14,8 @@
 \only<1>{
 \begin{block}{SAT}
 \begin{itemize}
-\item[--] Given a Boolean formula $\phi$ of $n$ variables.
-\item[?] Find an assignment that satisfies $\phi$.
+\item[--] Given a Boolean formula $\varphi$ of $n$ variables.
+\item[?] Find an assignment that satisfies $\varphi$.
 \end{itemize}
 \end{block}
 }
@@ -23,8 +23,8 @@
 \only<2>{
 \begin{block}{\#SAT}
 \begin{itemize}
-\item[--] Given a Boolean formula $\phi$ of $n$ variables.
-\item[?] How many assignments in $2^{\mathrm{Var}(\phi)}$ satisfy $\phi$?
+\item[--] Given a Boolean formula $\varphi$ of $n$ variables.
+\item[?] How many assignments in $2^{\mathrm{Var}(\varphi)}$ satisfy $\varphi$?
 \end{itemize}
 \end{block}
 }
@@ -35,61 +35,77 @@ Let $\mathrm{SAT}(\chi) \subseteq 2^{\mathrm{VAR}(\chi)}$ be the set of all sati
 \vspace{-0.3cm}
 $$\mathrm{SAT}(\chi) = \{\rho:\mathrm{VAR}(\chi) \rightarrow \{0, 1\} : \rho(\chi) = 1\}.$$
 \vspace{-0.8cm}
-\uncover<4->{$$\text{SAT: Is } \mathrm{SAT}(\phi) = \emptyset.
+\uncover<4->{$$\text{SAT: Is } \mathrm{SAT}(\varphi) = \emptyset.
 \qquad \qquad \qquad
-\text{\#SAT: Find } |\mathrm{SAT}(\phi)|.$$}
+\text{\#SAT: Find } |\mathrm{SAT}(\varphi)|.$$}
 \vspace{-0.6cm}
 \end{block}
 }
 
 \only<5>{
 \begin{block}{Example}
-$$\phi = X_1 \land (X_2 \lor \lnot X_3)$$
-Clearly, \#SAT($\phi$) = 3.
+$$\varphi = X_1 \land (X_2 \lor \lnot X_3)$$
+Clearly, \#SAT($\varphi$) = 3.
 \end{block}
 }
 
 \only<6>{
 \begin{block}{Negation Normal Form}
-A Boolean formula $\phi$ is in NNF form, if it contains only disjunctions and conjunctions over a set of positive and(or) negative literals.
+A Boolean formula $\varphi$ is in NNF form, if it contains only disjunctions and conjunctions over a set of positive and(or) negative literals.
 
-\textbf{Example.} $\phi = X_1 \lor \lnot X_2$.
+\textbf{Example.} $\varphi = X_1 \lor \lnot X_2$.
 \end{block}
 }
 
 \only<7>{
 \begin{block}{Conjunctive Normal Form}
-A Boolean formula $\phi$ is in CNF, if it is a conjunction of one or more clauses, where each clauses is a disjunction of one or more literals. Note that each CNF formula is an NNF formula as well.
+A Boolean formula $\varphi$ is in CNF, if it is a conjunction of one or more clauses, where each clauses is a disjunction of one or more literals. Note that each CNF formula is an NNF formula as well.
 \end{block}
 }
 
 \only<8>{
 \begin{block}{Decomposable Negation Normal Form}
-A Boolean formula $\phi$ is in DNNF, if it is in NNF and for each conjunction subformula $phi' := \psi_1 \land \psi_2$ we have $\mathrm{VAR}(\psi_1) \cap \mathrm{VAR}(\psi_2) = \emptyset$.
+A Boolean formula $\varphi$ is in DNNF, if it is in NNF and for each conjunction subformula $phi' := \psi_1 \land \psi_2$ we have $\mathrm{VAR}(\psi_1) \cap \mathrm{VAR}(\psi_2) = \emptyset$.
 \end{block}
 }
 
 \only<9>{
 \begin{block}{deterministic Decomposable Negation Normal Form}
-A Boolean formula $\phi$ is in d-DNNF, if it is in DNNF and for each disjunction subformula  $\phi' = \psi_1 \lor \psi_2$ we have $\mathrm{SAT}(\psi_1) \cap \mathrm{SAT}(\psi_2) = \emptyset$.
+A Boolean formula $\varphi$ is in d-DNNF, if it is in DNNF and for each disjunction subformula  $\varphi' = \psi_1 \lor \psi_2$ we have $\mathrm{SAT}(\psi_1) \cap \mathrm{SAT}(\psi_2) = \emptyset$.
 \end{block}
 }
 
 \only<10->{
 \begin{block}{decision Decomposable Negation Normal Form}
-A Boolean formula $\phi$ is in dec-DNNF, if it is in DNNF and each disjunction subformula  $\phi'$ is of the form $\phi' = (X \land \psi_1) \lor (\lnot X \land \psi_2)$ for some variable $X \in \mathrm{VAR}(\phi)$.
+A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunction subformula  $\varphi'$ is of the form $\varphi' = (X \land \psi_1) \lor (\lnot X \land \psi_2)$ for some variable $X \in \mathrm{VAR}(\varphi)$.
 
 \uncover<11>{\textbf{Note.} Each dec-DNNF is a d-DNNF.}
 \end{block}
 }
 \end{frame}
 
+\begin{frame}[t]{Assignments}
+	\begin{itemize}[<+->]
+		\item Given a CNF Formula $\varphi$, an \textbf{assignment} for $C$ is a function $\tau : \mathrm{VAR}(C) \rightarrow \{0, 1\}$.
+		\item For $V' \subseteq \mathrm{VAR}(C)$, we define the \textbf{partial assignment} $\tau_{|V'} : V' \rightarrow \{0, 1\}$ as $\tau$ restricted to the variables in $V'$.
+		\item A partial assignment $\tau_{|V'}$ satisfies a CNF-formula $\varphi$ ($\tau_{|V'} \models \varphi$), if for each clause $C \in \varphi$ there is a variable $v \in \mathrm{VAR}(C) \cap V'$ such that $\tau_{|V'}(v) = 1$ if and only if $v$ appears in $C$ as a positive literal.
+
+	\end{itemize}
+	\uncover<4>{
+	\begin{block}{Example}
+		$$\varphi := (v_1 \lor \lnot v_2 \lor v_3) \land (v_1 lor v_2) \land (\lnot v2 \lor \lnot v_3)$$
+		For $V' = \{v_1, v_2\}, \tau_{|V'}(v_1) = 1, \tau_{|v'}(v_2) = 0$,
+		the partial assignment $\tau_{|V'}$ satisfies $\varphi$.
+	\end{block}
+	}
+\end{frame}
+
 \begin{frame}[t]{Structuredness of a formula}
 	\begin{itemize}[<+->]
-		\item Let $\phi$ be a DNNF formula and let $V := \mathrm{VAR}(\phi)$.
-		\item A \textbf{$\mathbf{v}$Tree} $T$ is a binary tree where the leaves of the tree has a one-to-one correspondence to the variables of $\phi$.
-		\item The formula $\phi$ respects $T$ if and only if for each subformula of  $\phi$ of the form $\phi' := \psi_1 \land \psi_2$, there is a vertex $v \in V(T)$ with two children $v_1, v_2$, where $\mathrm{VAR}(\psi_1)\subseteq V(T_{v_1})$ and $\mathrm{VAR}(\psi_2) \subseteq V(T_{v_2})$, where $T_v$ is the subtree of $T$ rooted at $v$. We say $\phi'$ respects $v$ in this case.
-		\item A formula $\phi$ is structured, if there is a $v$tree $T$ over the vertices of $\phi$, such that $\phi$ respects $T$.
+		\item Let $\varphi$ be a DNNF formula and let $V := \mathrm{VAR}(\varphi)$.
+		\item A \textbf{$\mathbf{v}$Tree} $T$ is a binary tree where the leaves of the tree has a one-to-one correspondence to the variables of $\varphi$.
+		\item The formula $\varphi$ respects $T$ if and only if for each subformula of  $\varphi$ of the form $\varphi' := \psi_1 \land \psi_2$, there is a vertex $v \in V(T)$ with two children $v_1, v_2$, where $\mathrm{VAR}(\psi_1)\subseteq V(T_{v_1})$ and $\mathrm{VAR}(\psi_2) \subseteq V(T_{v_2})$, where $T_v$ is the subtree of $T$ rooted at $v$. We say $\varphi'$ respects $v$ in this case.
+		\item A formula $\varphi$ is structured, if there is a $v$tree $T$ over the vertices of $\varphi$, such that $\varphi$ respects $T$.
 	\end{itemize}
 
 	\uncover<3->{
