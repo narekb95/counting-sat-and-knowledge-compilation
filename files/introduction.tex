@@ -123,24 +123,26 @@ A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunctio
 \begin{frame}[t]{Hypergraphs and $\beta$-acyclic graphs}
 	\begin{minipage}{.59\linewidth}
 	\begin{itemize}
-		\item Hypergraphs $\mathcal{G}$.
+		\item Hypergraph $\mathcal{G}$.
 			\begin{itemize}
 				\item A set of vertices $V(\mathcal{G})$.
 				\item Edges $E(\mathcal{G})$, defined as 
 				\item[] subsets over $V(\mathcal{G})$.
 			\end{itemize}
-		\item Different ways to translate
-		\item[] \hspace{1cm} to hypergraphs.
-		\item $\beta$ acyaclic hypergraphs.
+
+		\uncover<2->{\item Different ways to translate
+		\item[] \hspace{1cm} acycli8ity to  hypergraphs.}
+
+		\uncover<3->{\item $\beta$-acyclic hypergraphs.}
 			\begin{itemize}
-				\item Defined on the edges.
-				\item Let $\rho := v_1, \dots v_n$ be an
-				\item[] \hspace{1cm}enumeration of the vertices.
-				\item $\rho$ is an $\beta$-elimination, if for all
-				\item[] \hspace{1cm}$e_1, e_2 \in E(\mathcal{G})$ and $v_i \in e_1 \cap e_2$,
-				\item[]\hspace{1cm}$e_{1|\geq i} \subseteq e_2$ or $e_{2|\geq i} \subseteq e_1$.
-				\item A hypergraph is $\beta$-acyclic,
-				\item[] \hspace{1cm} if it admits an elimination.
+				\uncover<4->{\item Defined on the edges.}
+				\uncover<5->{\item Let $\rho := v_1, \dots v_n$ be an
+				\item[] \hspace{1cm}enumeration of the vertices.}
+				\uncover<6->{\item $\rho$ is a $\beta$-elimination, if for all}
+				\uncover<7->{\item[] \hspace{1cm}$e_1, e_2 \in E(\mathcal{G})$ and $v_i \in e_1 \cap e_2$,
+				\item[]\hspace{1cm}$e_{1|\geq i} \subseteq e_2$ or $e_{2|\geq i} \subseteq e_1$.}
+				\uncover<8->{\item A hypergraph is $\beta$-acyclic,
+				\item[] \hspace{1cm} if it admits a $\beta$-elimination.}
 
 			\end{itemize}
 	\end{itemize}
@@ -158,10 +160,10 @@ A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunctio
 		\item[] \hspace{1cm}bipartite graph $(V(\mathcal{G}) \cup E(\mathcal{G}), E)$
 		\item[] \hspace{1cm},where $\{v, e\} \in E$ iff $v \in e$.
 			\vspace{.5cm}
-		\item Hypergraph of a CNF-Formula.
-		\item The incidence graph of a CNF-Formula is 
-		\item[] \hspace {1cm} the incidence graph of its hyper graph.
-		\item A CNF-Formula is $\beta$-acyclic if its hypergraph is.
+		\uncover<2->{\item Hypergraph of a CNF-Formula.}
+		\uncover<3->{\item The incidence graph of a CNF-Formula is
+		\item[] \hspace {1cm} the incidence graph of its hyper graph.}
+		\uncover<4->{\item A CNF-Formula is $\beta$-acyclic if its hypergraph is.}
 	\end{itemize}
 
 \end{frame}
