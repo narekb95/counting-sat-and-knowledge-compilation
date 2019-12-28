@@ -41,13 +41,35 @@
 
 
 \begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
+	\begin{itemize}
+		\item For a clause $C$, we define the partial assignment $\tau_C$ over the variables of $C$ as the only assignment that does not satisfies $C$, i.e. for $x \in C$, $\tau_C(x) = 1$ if and only if $x$ appears as a negative literal in $C$.
+
+		\item Let $F$ be a given $\beta$-acyclic CNF-formula and $v_1, \dots v_n$ be an elimination order of the variables in $F$. Let $\mathcal{H}$ be the hypergraph of $F$.
+	\end{itemize}
 	\begin{block}{Lemma (lemma 6)}
-	\end{block}
-	\begin{block}{Corollary (corollary 7)}
+		Let $x \neq x_1 \in \mathrm{VAR}(F)$ and let $y$ be the predecessor of $x$ for $<$.  Let $e \in \mathcal{H}$ and $\tau : (e \cap V_{\geq x}) \rightarrow \{0, 1\}$. Then either $F^x_e[\tau] \equiv 1$ or there exists $U \subseteq \mathcal{H}^x_e$ such that 
+		$$ F^x_e[\tau] \equiv \bigwedge\limits_{g \in U} F^y_g[\tau^y_{C_g}],$$
+		where $C_g in F^x_e$ such that $\mathrm{C_g} = g$.
 	\end{block}
 \end{frame}
 
 \begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
+		$$ F^x_e[\tau] \equiv \bigwedge\limits_{g \in U} F^y_g[\tau^y_{C_g}]$$
+\end{frame}
+
+\begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
+	\begin{block}{Corollary (corollary 7)}
+		Let $x \neq x_1 \in \mathrm{VAR}(F)$ and let $y$ be the predecessor of $x$ for $<$. For every $C \in \mathcal{H}$, there exist $U_0, U_1 \subseteq \mathcal{H}^x_{\mathrm{VAR}(C)}$ such that
+		$$F^x_{\mathrm{VAR}(C)}[\tau^x_C] \equiv 
+		( x \land \bigwedge\limits_{g \in U_1} F^y_g[\tau^y_{C_g}]) \lor
+		( \lnot x \land \bigwedge\limits_{g \in U_2} F^y_g[\tau^y_{C_g}])
+		$$
+	\end{block}
+	Explanation.
+\end{frame}
+
+\begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
 	\begin{block}{Theorem (theorem 8)}
+		Let $F$ be a $\beta$-acyclic CNF-formula. One can construct in polynomial time in $\mathrm{size}(F)$ a dec-DNNF $D$ of size $O(\mathrm(size(F))$ and fanin at most $|\mathcal{H}|$ computing F.
 	\end{block}
 \end{frame}
