@@ -1,4 +1,3 @@
-
 \begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
 	\begin{itemize}[<+->]
 	\item Let $\mathcal{H}$ be a $\beta$-acyclic graph and $v_1, \dots v_n$ a $\beta$-elimination.
@@ -68,10 +67,12 @@
 	\item A $\beta$-acyclic CNF-formula F is given.
 	\item Let $\mathcal{H}$ be the hyper graph of $F$.
 	\item Let $v_1, \dots v_n$ be an elimination order in $\mathcal{H}$.
-	\item Let {\color{blue}$F^x_e$} be a subformula of $F$ that corresponds to $\mathcal{H}^x_e$
-	\item[]\hspace{1cm}, i.e. $C \in F^x_e$, if $\mathrm{VAR}(C) \in \mathcal{H}^x_e$.
-	\item For a clause $C$, the partial assignment {\color{blue}$\tau_C$} is defined over $\mathrm{VAR}(C)$ as the only assignment that does not satisfy $C$
-	\item[]\hspace{1cm}, i.e. for $x \in C$, $\tau_C(x) = 1$ if and only if $x$ appears as a negative literal in $C$.
+	\item Let {\color{blue}$F^x_e$} be a subformula of $F$ that corresponds to $\mathcal{H}^x_e$,
+	\item[]\hspace{1cm}i.e. $C \in F^x_e$, if $\mathrm{VAR}(C) \in \mathcal{H}^x_e$.
+	\item For a clause $C$, the partial assignment {\color{blue}$\tau_C$} is defined over $\mathrm{VAR}(C)$ as the only assignment that does not satisfy $C$,
+	\item[]\hspace{1cm}i.e. for $x \in C$, $\tau_C(x) = 1$ if and only if $x$ appears as a negative literal in $C$.
+	\item We define ${\color{blue}\tau^x_C} := \tau_{C|\geq x}$,
+	\item[]\hspace{1cm}i.e. $F[\tau^x_C]$ results from $F$ by removing all variables greater than $x$ from each clause.
 	\end{itemize}
 \end{frame}
 \begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
@@ -80,10 +81,14 @@
 		$$ F^x_e[\tau] \equiv \bigwedge\limits_{g \in U} F^y_g[\tau^y_{C_g}],$$
 		where $C_g in F^x_e$ such that $\mathrm{C_g} = g$.
 	\end{block}
-\end{frame}
-
-\begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
-		$$ F^x_e[\tau] \equiv \bigwedge\limits_{g \in U} F^y_g[\tau^y_{C_g}]$$
+	Proof sketch.
+	\pause\begin{itemize}[<+->]
+		\item Let $A$ be the set of all edges not satisfied by $\tau$. 
+		\item For each clause $C$ such that $\mathrm{VAR}(C) \notin A, \tau \models C$.
+		\item Choose $U$ as the set of "maximal" edges $g \in A$,
+		\item[]\hspace{1cm}i.e. $g \not \subseteq \mathcal{H}^y_f$ for all $f \in A$.
+		\item $U$ can be computed in polynomial time, is decomposable and for each $f \in A$, there is $g \in U$ sch that $f \in \mathcal{H}^y_g$
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
@@ -91,10 +96,15 @@
 		Let $x \neq x_1 \in \mathrm{VAR}(F)$ and let $y$ be the predecessor of $x$ for $<$. For every $C \in \mathcal{H}$, there exist $U_0, U_1 \subseteq \mathcal{H}^x_{\mathrm{VAR}(C)}$ such that
 		$$F^x_{\mathrm{VAR}(C)}[\tau^x_C] \equiv 
 		( x \land \bigwedge\limits_{g \in U_1} F^y_g[\tau^y_{C_g}]) \lor
-		( \lnot x \land \bigwedge\limits_{g \in U_2} F^y_g[\tau^y_{C_g}])
+		( \lnot x \land \bigwedge\limits_{g \in U_2} F^y_g[\tau^y_{C_g}]).
 		$$
+		Moreover, all conjunctions are decomposable and $U_0, U_1$ can be computed in polynomial time.
 	\end{block}
-	Explanation.
+
+	\pause
+	Proof sketch. Let $\tau_1 := \tau^x_C \cup \{x \mapsto 1\}$ and $\tau_0 := \tau^x_C \cup \{x \mapsto 0\}$.
+	$$F^x_{\mathrm{VAR}(C)}[\tau^x_C] =  (x \land F^x_{\mathrm{VAR}(C)}[\tau_1]) \lor (\lnot x \land F^x_{\mathrm{VAR}(C)}[\tau_0])$$	
+		Apply lemma 6 on each of the terms.
 \end{frame}
 
 \begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
