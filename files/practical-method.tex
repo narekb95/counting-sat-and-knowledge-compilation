@@ -3,7 +3,7 @@
 	\begin{itemize}[<+->]
 	\item Let $\mathcal{H}$ be a $\beta$-acyclic graph and $v_1, \dots v_n$ a $\beta$-elimination.
 		\item For two edge $e, f \in \mathcal{H}$, $e < f$, if and only if $\max\{e \Delta f\}\in f$
-		\item $\mathcal{H}^x_e$ denotes the subgraph of $\mathcal{H}$, that contain the edges $f$, such that there is a walk from $f$ to $e$ that goes only through edges smaller than $e$ and vertices smaller than (or equal to) $x$.
+		\item {\color{blue}$\mathcal{H}^x_e$} denotes the subgraph of $\mathcal{H}$, that contain the edges $f$, such that there is a walk from $f$ to $e$ that goes only through edges smaller than $e$ and vertices smaller than (or equal to) $x$.
 	\end{itemize}
 	\begin{figure}[htpb]
 		\centering
@@ -43,8 +43,7 @@
 	\begin{block}{Lemma (lemma 5)}
 		For $x \in V(\mathcal{H}), e \in \mathcal{H}$ and $f \in \mathcal{H}^x_e$, there exists a decreasing path from $e$ to $f$ going through vertices smaller than $x$.
 	\end{block}
-	Proof sketch. Any shortest path from $e$ to $f$ is decreasing. A path exists by definition.
-
+	\uncover<2->{Proof sketch. Any shortest path from $e$ to $f$ is decreasing. A path exists by definition.}
 \end{frame}
 
 \begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
@@ -52,18 +51,30 @@
 		For every $x \in V(\mathcal{H})$ and $e \in \mathcal{H}, V(\mathcal{H}^x_e) \cap V_{\geq x} \subseteq e$
 	\end{block}
 
-	[figure]
+	\begin{center}
+		\resizebox{.5\columnwidth}{!}{
+		\input{figures/subgraph.tex}
+		}
+	\end{center}
+	\uncover<2->{Proof sketch. Prove that all edges of a decreasing path are subsets of the first edge by induction over the length of the path.}
 
-	[why do we need this]
+	\uncover<3->{Intuitively, this allows us to use dynamic programming, since all variables in $\mathcal{H}^x_e$ not contained in $e$ are smaller than $x$.}
+
 \end{frame}
 
 
 \begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
-	\begin{itemize}
-		\item For a clause $C$, we define the partial assignment $\tau_C$ over the variables of $C$ as the only assignment that does not satisfies $C$, i.e. for $x \in C$, $\tau_C(x) = 1$ if and only if $x$ appears as a negative literal in $C$.
-
-		\item Let $F$ be a given $\beta$-acyclic CNF-formula and $v_1, \dots v_n$ be an elimination order of the variables in $F$. Let $\mathcal{H}$ be the hypergraph of $F$.
+	\begin{itemize}[<+->]
+	\item A $\beta$-acyclic CNF-formula F is given.
+	\item Let $\mathcal{H}$ be the hyper graph of $F$.
+	\item Let $v_1, \dots v_n$ be an elimination order in $\mathcal{H}$.
+	\item Let {\color{blue}$F^x_e$} be a subformula of $F$ that corresponds to $\mathcal{H}^x_e$
+	\item[]\hspace{1cm}, i.e. $C \in F^x_e$, if $\mathrm{VAR}(C) \in \mathcal{H}^x_e$.
+	\item For a clause $C$, the partial assignment {\color{blue}$\tau_C$} is defined over $\mathrm{VAR}(C)$ as the only assignment that does not satisfy $C$
+	\item[]\hspace{1cm}, i.e. for $x \in C$, $\tau_C(x) = 1$ if and only if $x$ appears as a negative literal in $C$.
 	\end{itemize}
+\end{frame}
+\begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
 	\begin{block}{Lemma (lemma 6)}
 		Let $x \neq x_1 \in \mathrm{VAR}(F)$ and let $y$ be the predecessor of $x$ for $<$.  Let $e \in \mathcal{H}$ and $\tau : (e \cap V_{\geq x}) \rightarrow \{0, 1\}$. Then either $F^x_e[\tau] \equiv 1$ or there exists $U \subseteq \mathcal{H}^x_e$ such that 
 		$$ F^x_e[\tau] \equiv \bigwedge\limits_{g \in U} F^y_g[\tau^y_{C_g}],$$
