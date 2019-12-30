@@ -1,17 +1,32 @@
+
 \begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
-	\begin{itemize}
-		\item We fix a $\beta$-acyclic graph $\mathcal{H}$ and an elimination-ordering $\leq$ on $\mathcal{H}$.
-		\item Let $v_1, \dots v_n$ be an enumeration of the vertices in $\mathcal{H}$ according to $\leq$.
-		\item $V_{\leq v_i} := \{v_j ; j\leq i\}$.
-		\item For two edge $e, f \in \mathcal{H}$, $e < f$ if and only if $\max\{e \Delta f\}\in f$
+	\begin{itemize}[<+->]
+	\item Let $\mathcal{H}$ be a $\beta$-acyclic graph and $v_1, \dots v_n$ a $\beta$-elimination.
+		\item For two edge $e, f \in \mathcal{H}$, $e < f$, if and only if $\max\{e \Delta f\}\in f$
+		\item $\mathcal{H}^x_e$ denotes the subgraph of $\mathcal{H}$, that contain the edges $f$, such that there is a walk from $f$ to $e$ that goes only through edges smaller than $e$ and vertices smaller than (or equal to) $x$.
 	\end{itemize}
+	\begin{figure}[htpb]
+		\centering
+		\resizebox{.6\columnwidth}{!}{
+		\input{figures/subgraph.tex}
+		}
+		\caption{Note that $e_2 \notin H^{v_2}_{e_3}$ meanwhile $e_2 \in H^{v_3}_{e_3}$}%
+		\label{fig:name}
+	\end{figure}
+\end{frame}
+\begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
 	\begin{block}{Lemma (lemma 2)}
 		For $x,y \in V(\mathcal{H}), x \leq y$ and for $e, f \in \mathcal{H}, e \leq f$,
 			$$\text{if } V(\mathcal{H}^x_e)\cap V(\mathcal{H}^y_f)\cap V_{\leq x} \neq \emptyset,
 			\text{ then } \mathcal{H}^x_e \subseteq \mathcal{H}^y_f.$$
-		In particular, for all $y$,
+			In particular, for all $y \in V(\mathcal{H})$,
 		$$\text{if } e \in \mathcal{H}^y_f, \text{ then } \mathcal{H}^y_e \subseteq \mathcal{H}^y_f$$
 	\end{block}
+	\uncover<2->{
+	Proof sketch. For $g \in \mathcal{H}^x_e$, there is a path from $g$ to $e$ using edges smaller than $e$ and vertices smaller than $x$.
+	
+	There is also a path from $e$ to $f$. Concatenate both paths to get a path from $g$ to $f$.
+	}
 \end{frame}
 
 \begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
@@ -21,11 +36,11 @@
 \end{frame}
 
 \begin{frame}[t]{Lemmas on $\beta$-acyclic graphs}
-	A decreasing path from $e$ to $f$ is a path $(e_0, x_0, e_1, v_1 \dots v_{l-1}, e_n)$, such that 
+	A path $(e_1, x_1, \dots e_{n+1})$ is called decreasing, if $e_i > e_{i+1}$ and $x_i > x_{i+1}$ for all $i$.
 	\begin{block}{Lemma (lemma 5)}
 		For $x \in V(\mathcal{H}), e \in \mathcal{H}$ and $f \in \mathcal{H}^x_e$, there exists a decreasing path from $e$ to $f$ going through vertices smaller than $x$.
 	\end{block}
-	Proof sketch. Any shortest path from $e$ to $f$ is decreasing. A path exists by definition [see below].
+	Proof sketch. Any shortest path from $e$ to $f$ is decreasing. A path exists by definition.
 
 \end{frame}
 
@@ -72,4 +87,23 @@
 	\begin{block}{Theorem (theorem 8)}
 		Let $F$ be a $\beta$-acyclic CNF-formula. One can construct in polynomial time in $\mathrm{size}(F)$ a dec-DNNF $D$ of size $O(\mathrm(size(F))$ and fanin at most $|\mathcal{H}|$ computing F.
 	\end{block}
+\end{frame}
+
+\begin{frame}[t]{concluding the practical method}
+	\begin{itemize}[<+->]
+		\item Exhaustive DPLL is a very-well used in practice method.
+			\begin{itemize}
+				\item Try to write $F$ as a decomposable conjunction. 
+				\item[] \hspace{1cm}Solve independently on each and multiply the results.
+				\item Choose a variable $x$.
+				\item[] \hspace{1cm}Compute $\#F[x\mapsto 1] + \#F[x\mapsto 0]$.
+			\end{itemize}
+		\item The method makes use of cashing (choose what values to keep).
+		\item Tries to find a good candidate for $x$.
+		\item The previous dynamic programming is implicitly a run of DPLL. 
+		\item The variables are chosen in e reversed $\beta$-elimination ordering. 
+	\end{itemize}
+	\uncover<10->{\begin{block}{conclusion}
+		Exhaustive DPLL can yield efficient algorithms "theoretically", if we can find a good order to choose the variable (such an ordering must be computable in polynomial time) and a good method of cashing.
+	\end{block}}
 \end{frame}

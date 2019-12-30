@@ -100,51 +100,26 @@ A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunctio
 	}
 \end{frame}
 
-\begin{frame}[t]{Structuredness of a formula}
-	\begin{itemize}[<+->]
-		\item Let $\varphi$ be a DNNF formula and let $V := \mathrm{VAR}(\varphi)$.
-		\item A \textbf{$\mathbf{v}$Tree} $T$ is a binary tree where the leaves of the tree has a one-to-one correspondence to the variables of $\varphi$.
-		\item The formula $\varphi$ respects $T$ if and only if for each subformula of  $\varphi$ of the form $\varphi' := \psi_1 \land \psi_2$, there is a vertex $v \in V(T)$ with two children $v_1, v_2$, where $\mathrm{VAR}(\psi_1)\subseteq V(T_{v_1})$ and $\mathrm{VAR}(\psi_2) \subseteq V(T_{v_2})$, where $T_v$ is the subtree of $T$ rooted at $v$. We say $\varphi'$ respects $v$ in this case.
-		\item A formula $\varphi$ is structured, if there is a $v$tree $T$ over the vertices of $\varphi$, such that $\varphi$ respects $T$.
-	\end{itemize}
 
-	\uncover<3->{
-	\begin{minipage}{.49\linewidth}
-		$$(x\land(y\lor z)) \lor (z \textcolor{red}{\bm{\land}} \lnot x)$$
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
-		\centering
-		\includegraphics[width=.6\linewidth]{figures/vtree.eps}
-	\end{minipage}
-	}
-\end{frame}
-
-\begin{frame}[t]{Hypergraphs and $\beta$-acyclic graphs}
+\begin{frame}[t]{Hypergraphs}
 	\begin{minipage}{.59\linewidth}
 	\begin{itemize}
-		\item Hypergraph $\mathcal{G}$.
+		\item Hypergraph $\mathcal{H}$.
 			\begin{itemize}
-				\item A set of vertices $V(\mathcal{G})$.
-				\item Edges $E(\mathcal{G})$, defined as 
-				\item[] subsets over $V(\mathcal{G})$.
+				\item A set of vertices $V(\mathcal{H})$.
+				\item Edges $E(\mathcal{H})$, defined as 
+				\item[] subsets over $V(\mathcal{H})$.
 			\end{itemize}
 
-		\uncover<2->{\item Different ways to translate
-		\item[] \hspace{1cm} acycli8ity to  hypergraphs.}
+		\uncover<2->{\item A walk is sequence $(e_1, x_1, \dots, x_n, e_{n+1})$, 
+		\item[] $e_i \in \mathcal{H}, x_i \in V(\mathcal{H})$ and 
+	\item[] $x_i \in e_{i} \cap e_{i-1}$ for all $i \in [n]$.}
 
-		\uncover<3->{\item $\beta$-acyclic hypergraphs.}
-			\begin{itemize}
-				\uncover<4->{\item Defined on the edges.}
-				\uncover<5->{\item Let $\rho := v_1, \dots v_n$ be an
-				\item[] \hspace{1cm}enumeration of the vertices.}
-				\uncover<6->{\item $\rho$ is a $\beta$-elimination, if for all}
-				\uncover<7->{\item[] \hspace{1cm}$e_1, e_2 \in E(\mathcal{G})$ and $v_i \in e_1 \cap e_2$,
-				\item[]\hspace{1cm}$e_{1|\geq i} \subseteq e_2$ or $e_{2|\geq i} \subseteq e_1$.}
-				\uncover<8->{\item A hypergraph is $\beta$-acyclic,
-				\item[] \hspace{1cm} if it admits a $\beta$-elimination.}
+		\uncover<3->{\item A \textbf{path} is a walk that never goes twice through the same vertex nor the same edge.}
 
-			\end{itemize}
+		\uncover<4->{\item Different ways to translate
+		\item[] \hspace{1cm} acyclicity to  hypergraphs.}
+
 	\end{itemize}
 \end{minipage}
 \begin{minipage}{.39\linewidth}
@@ -154,18 +129,22 @@ A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunctio
 \footnotetext[1]{$e_{|\geq i} := e \cap \{v_i, \dots v_n\}$.}
 \end{frame}
 
-\begin{frame}[t]{Incidence graphs and structure of formulas}
+\begin{frame}[t]{$\beta$-acyclic graphs}
 	\begin{itemize}
-		\item The \textbf{incidence graph} of $\mathcal{G}$ is a 
-		\item[] \hspace{1cm}bipartite graph $(V(\mathcal{G}) \cup E(\mathcal{G}), E)$
-		\item[] \hspace{1cm},where $\{v, e\} \in E$ iff $v \in e$.
-			\vspace{.5cm}
-		\uncover<2->{\item Hypergraph of a CNF-Formula.}
-		\uncover<3->{\item The incidence graph of a CNF-Formula is
-		\item[] \hspace {1cm} the incidence graph of its hyper graph.}
-		\uncover<4->{\item A CNF-Formula is $\beta$-acyclic if its hypergraph is.}
+		\item Let $\rho := v_1, \dots v_n$ be an enumeration of the vertices.
+		\uncover<2->{\item $\rho$ is a $\beta$-elimination, if for all}
+		\uncover<3->{\item[] \hspace{1cm}$e_1, e_2 \in E(\mathcal{H})$ and $v_i \in e_1 \cap e_2$,
+		\item[]\hspace{1cm}$e_{1|\geq i} \subseteq e_2$ or $e_{2|\geq i} \subseteq e_1$.}
+		\uncover<4->{\item A hypergraph is $\beta$-acyclic, if it admits a $\beta$-elimination.}
+		\uncover<5->{\item We define $V_{\leq v_i} := \{v_j ; j\leq i\}$.}
+
 	\end{itemize}
 
+	\begin{center}
+		\input{figures/hypergraph.tex}
+	\end{center}
+
 \end{frame}
+
 	
 

@@ -1,0 +1,35 @@
+\begin{tikzpicture}
+	\node (u) at (0, 0) {};
+	\node (v) at (3, 3) {};
+
+	\node (v1) at (1, 1) {};
+	\node (v2) at (3, 2) {};
+	\node (v3) at (5, 2) {};
+	\node (v4) at (6, 3) {};
+	\node (v5) at (8, 3) {};
+	\begin{scope}[opacity=.5]
+	\draw [draw=black, fill=green!80] plot [smooth cycle] coordinates {
+			($(v1) + (0,-.5)$) ($(v1) + (-1,0)$) ($(v2) + (-.2,.5)$)
+			($(v3) + (.5, .2)$) ($(v3) + (0, -.5)$) ($(v2) + (0, -.7)$)};
+
+	\draw [draw=black, fill=red!70] plot [smooth cycle] coordinates {
+			($(v3) + (0,-.8)$) ($(v3) + (-.5,0)$)
+			($(v4) + (-.3, .5)$) ($(v4) + (.4, -.2)$)
+		};
+	\draw [draw=black, fill=yellow!60] plot [smooth cycle] coordinates {
+			($(v2) + (0,.5)$) ($(v3) + (0,.5)$) ($(v4) + (0,.5)$)
+			($(v5) + (1,.5)$) ($(v5) + (.5,-.5)$) ($(v4) + (.5,-.5)$) 
+			($(v3) + (.5,-.5)$) ($(v2) + (-.2,-.5)$) 
+		};
+	\end{scope}
+
+	\fill (v1) circle (0.1) node[above right] {$v_1$};
+	\fill (v2) circle (0.1) node[right] {$v_2$};
+	\fill (v3) circle (0.1) node[right] {$v_3$};
+	\fill (v4) circle (0.1) node[below left] {$v_4$};
+	\fill (v5) circle (0.1) node[right] {$v_5$};
+
+	\node at (2,1.8) {$e_1$};
+	\node at (5,1) {$e_2$};
+	\node at (7,3.4) {$e_3$};
+\end{tikzpicture}
