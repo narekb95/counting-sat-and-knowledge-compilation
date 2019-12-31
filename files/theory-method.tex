@@ -2,7 +2,7 @@
 	\begin{itemize}[<+->]
 		\item A \textbf{branch decomposition} $T$ of a graph $G = (V, E)$ is a binary rooted tree $T$, whose leaves are in one-to-one correspondence with $V$.
 		\item The maximal-induced-matching width (MIM-width) of a vertex $t$ of $T$ is the size of a largest induced matching $M$ of $G[V\setminus V_t, V_t]$.
-		\item $mimw(T) = \max\{MIM-width(t) : t \in V(T)\}$.
+		\item $mimw(T) = \max\{\mathrm{mimw}(t) : t \in V(T)\}$.
 	\end{itemize}
 
 	\uncover<4->{
@@ -76,5 +76,20 @@
 	\end{itemize}
 
 \end{frame}
-\begin{frame}{Results on the structured d-DNNF}
+
+\begin{frame}[t]{Results on the structured d-DNNF}
+	\begin{block}{Theorem (theorem 9)}
+		There exists an infinite family $\mathcal{F}$ of $\beta$-acyclic CNF-formulas such that for every $F\in \mathcal{F}$ having $n$ variables, there is no structured DNNF of size less than $2^{\Omega(\sqrt n)}$ computing $F$.
+	\end{block}
+
+	\begin{block}{Theorem (theorem 1)}
+		There exists an infinite family of $\beta$-acyclic hypergraphs of incidence MIM-width $\Omega(n)$ where $n$ is the number of vertices of the hypergraph.\footnote{Understanding Model Counting for beta-acyclic CNF-formulas, Brault-Baron et al., 2015}
+	\end{block}
+\end{frame}
+
+\begin{frame}[t]{Results on the structured d-DNNF}
+	Let $F$ be a CNF-formula. Let $\hat{F} := \{K \cup \{c_K\} | K \in F\}$ where we add a fresh variable to each clause.
+	\begin{block}{Theorem (theorem 12)}
+		Let $F$ be a monotone formula of incidence MIM-width $k$. Any structured DNNF computing $\hat{F}$ is of size at least $2^{k/2}$.
+	\end{block}
 \end{frame}
