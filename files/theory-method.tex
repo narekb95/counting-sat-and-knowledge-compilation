@@ -82,19 +82,25 @@
 		There exists an infinite family $\mathcal{F}$ of $\beta$-acyclic CNF-formulas such that for every $F\in \mathcal{F}$ having $n$ variables, there is no structured DNNF of size less than $2^{\Omega(\sqrt n)}$ computing $F$.
 	\end{block}
 
+	\uncover<2->{
 	\begin{block}{Theorem (theorem 1)$^1$}
 		There exists an infinite family of $\beta$-acyclic hypergraphs of incidence MIM-width $\Omega(n)$ where $n$ is the number of vertices of the hypergraph.
 	\end{block}
+	}
 	\footnotetext[1]{Understanding Model Counting for beta-acyclic CNF-formulas, Brault-Baron et al., 2015.}
 \end{frame}
 
 \begin{frame}[t]{Results on the structured d-DNNF}
-	Let $r$ be a boolean function over $X$ and let $(Y, Z)$ be a partition of $X$. We call $r$ a $(Y, Z)$-rectangle if and only if for every $\tau, \tau' \in \{0, 1\}^X$ such that $\tau \models r$ and $\tau' \models r$, we have $\tau|Y \cup \tau'|Z) \models r$.
+	\begin{itemize}
+		\item Let $r$ be a boolean function over $X$ and let $(Y, Z)$ be a partition of $X$. We call $r$ a $(Y, Z)$-rectangle if and only if for every $\tau, \tau' \in \{0, 1\}^X$ such that $\tau \models r$ and $\tau' \models r$, we have $\tau|Y \cup \tau'|Z) \models r$.
+		\item A $(Y, Z)$-rectangle cover of a boolean function $f$ is a set $R = \{r_1, \dots, r_q\}$ of $(Y, Z)$-rectangles such that $\mathrm{sat}(f) = \bigcup_{i=1}^q \mathrm{sat}(r_i)$.
+	\end{itemize}
+	\uncover<2->{
 
-	A $(Y, Z)$-rectangle cover of a boolean function $f$ is a set $R = \{r_1, \dots, r_q\}$ of $(Y, Z)$-rectangles such that $\mathrm{sat}(f) = \bigcup_{i=1}^q \mathrm{sat}(r_i)$.
 	\begin{block}{Theorem (theorem 11)$^{2,3}$}
 		Let $D$ be a DNNF on variables $X$ respecting the vtree $T$. For every vertex $t$ of $T$, there exists a $(X_t, X \setminus X_t)$-rectangle cover of $D$ of size at most $|D|$, where $X_t = \mathrm{VAR}(T_t)$.
 	\end{block}
+	}
 	\footnotetext[2]{Knowledge Compilation Meets Communication Complexity, Bova et al., 2016.}
 	\footnotetext[3]{A Lower Bound on the Size of Decomposable Negation Normal Form, Pipatsrisawat and Darwiche, 2010.}
 \end{frame}
@@ -105,9 +111,14 @@
 		Let $F$ be a monotone formula of incidence MIM-width $k$. Any structured DNNF computing $\hat{F}$ is of size at least $2^{k/2}$.
 	\end{block}
 
+	\uncover<2->{
 	\begin{block}{Lemma (lemma 13)}
 		Let $X = \{x_1, \dots, x_n\}$ and $Y = \{y_1, \dots, y_n\}$ be two disjoint sets of $k$ variables. The number of $(X, Y)$-rectangles needed to cover the CNF-formula $F = \bigwedge^k_{i=1} (x_i\lor y_i)$ is at least $2^k$.
 	\end{block}
+	}
 
-	Proof sketch (lemma 12). Find an assignment $\tau$ of $\hat{F}$ such that $$\hat{F}[\tau] \equiv \bigwedge_{e \in N}(x_e \lor c_e).$$
+	\uncover<3->{
+	Proof sketch (lemma 12). Find an assignment $\tau$ of $\hat{F}$ such that
+	$$\hat{F}[\tau] \equiv \bigwedge_{e \in N}(x_e \lor c_e).$$
+	}
 \end{frame}
