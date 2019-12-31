@@ -64,6 +64,9 @@
 
 \begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
 	\begin{itemize}[<+->]
+	\item The hyper graph of a CNF-formula:
+	\item[]\hspace{1cm}Variables of each clause correspond to an edge.
+	\item[]\hspace{1cm}Two clauses might correspond to the same edge.
 	\item A $\beta$-acyclic CNF-formula F is given.
 	\item Let $\mathcal{H}$ be the hyper graph of $F$.
 	\item Let $v_1, \dots v_n$ be an elimination order in $\mathcal{H}$.
@@ -137,7 +140,14 @@
 
 \end{frame}
 
-\begin{frame}{Example}
+\begin{frame}[t]{Example}
+	\begin{center}
+		\resizebox{.45\columnwidth}{!}{
+		\input{figures/subgraph.tex}
+		}
+		$$F = \{\{\overline{v_1}, v_2, v_3\}, \{\overline{v_3}, v_4\}, \{v_2, v_3, \overline{v_4}, \overline{v_5}\}\}$$
+	\end{center}
+	\vspace{1cm}\hspace{7cm}The rest on the blackboard..
 \end{frame}
 \begin{frame}[t]{concluding the practical method}
 	\begin{itemize}[<+->]
