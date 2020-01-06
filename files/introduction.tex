@@ -88,6 +88,25 @@ A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunctio
 }
 \end{frame}
 
+\begin{frame}{Examples}
+	\centering
+	[On the blackboard..]
+\end{frame}
+
+\begin{frame}{Goals for today}
+	\begin{minipage}[.3\textheight]{\textwidth}
+		\centering
+		Build a dec-DNNF of polynomial size for {\color{gray}\textit{$\beta$-acyclic} graphs}.
+	\end{minipage}
+	\vfill
+	\hrule
+	\vfill
+	\begin{minipage}[.3\textheight]{\textwidth}
+		\centering
+		Show a subclass of $\beta$-acyclic formulas, where each {\color{gray}\textit{structured}} d-DNNF has exponential size.
+	\end{minipage}
+\end{frame}
+
 \begin{frame}[t]{Assignments}
 	\begin{itemize}[<+->]
 		\item Given a CNF Formula $\varphi$, an \textbf{assignment} for $C$ is a function $\tau : \mathrm{VAR}(C) \rightarrow \{0, 1\}$.
@@ -97,7 +116,7 @@ A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunctio
 	\end{itemize}
 	\uncover<4>{
 	\begin{block}{Example}
-		$$\varphi := (v_1 \lor \lnot v_2 \lor v_3) \land (v_1 lor v_2) \land (\lnot v2 \lor \lnot v_3)$$
+		$$\varphi := (v_1 \lor \lnot v_2 \lor v_3) \land (v_1 \lor v_2) \land (\lnot v2 \lor \lnot v_3)$$
 		For $V' = \{v_1, v_2\}, \tau_{|V'}(v_1) = 1, \tau_{|v'}(v_2) = 0$,
 		the partial assignment $\tau_{|V'}$ satisfies $\varphi$.
 	\end{block}
