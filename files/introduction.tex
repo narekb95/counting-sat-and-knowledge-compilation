@@ -51,7 +51,7 @@ Clearly, \#SAT($\varphi$) = 3.
 
 \only<6>{
 \begin{block}{Negation Normal Form}
-A Boolean formula $\varphi$ is in NNF form, if it contains only disjunctions and conjunctions over a set of positive and(or) negative literals.
+A Boolean formula $\varphi$ is in NNF form, if it contains only disjunctions and conjunctions over a set of positive and negative literals.
 
 \textbf{Example.} $\varphi = X_1 \lor \lnot X_2$.
 \end{block}
@@ -75,13 +75,13 @@ A Boolean formula $\varphi$ is in DNNF, if it is in NNF and for each conjunction
 
 \only<9>{
 \begin{block}{deterministic Decomposable Negation Normal Form}
-A Boolean formula $\varphi$ is in d-DNNF, if it is in DNNF and for each disjunction subformula  $\varphi' = \psi_1 \lor \psi_2$ we have $\mathrm{SAT}(\psi_1) \cap \mathrm{SAT}(\psi_2) = \emptyset$.
+A Boolean formula $\varphi$ is in d-DNNF, if it is in DNNF and for each disjunction subformula $\varphi' = \psi_1 \lor \psi_2$ we have $\mathrm{SAT}(\psi_1) \cap \mathrm{SAT}(\psi_2) = \emptyset$.
 \end{block}
 }
 
 \only<10->{
 \begin{block}{decision Decomposable Negation Normal Form}
-A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunction subformula  $\varphi'$ is of the form $\varphi' = (X \land \psi_1) \lor (\lnot X \land \psi_2)$ for some variable $X \in \mathrm{VAR}(\varphi)$.
+A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunction subformula $\varphi'$ is of the form $\varphi' = (X \land \psi_1) \lor (\lnot X \land \psi_2)$ for some variable $X \in \mathrm{VAR}(\varphi)$.
 
 \uncover<11>{\textbf{Note.} Each dec-DNNF is a d-DNNF.}
 \end{block}
@@ -116,8 +116,8 @@ A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunctio
 	\end{itemize}
 	\uncover<4>{
 	\begin{block}{Example}
-		$$\varphi := (v_1 \lor \lnot v_2 \lor v_3) \land (v_1 \lor v_2) \land (\lnot v2 \lor \lnot v_3)$$
-		For $V' = \{v_1, v_2\}, \tau_{|V'}(v_1) = 1, \tau_{|v'}(v_2) = 0$,
+		$$\varphi := (v_1 \lor \lnot v_2 \lor v_3) \land (v_1 \lor v_2) \land (\lnot v_2 \lor \lnot v_3)$$
+		For $V' = \{v_1, v_2\}, \tau_{|V'}(v_1) = 1, \tau_{|V'}(v_2) = 0$,
 		the partial assignment $\tau_{|V'}$ satisfies $\varphi$.
 	\end{block}
 	}
@@ -141,21 +141,24 @@ A Boolean formula $\varphi$ is in dec-DNNF, if it is in DNNF and each disjunctio
 		\uncover<3->{\item A \textbf{path} is a walk that never goes twice through the same vertex nor the same edge.}
 
 		\uncover<4->{\item Different ways to translate
-		\item[] \hspace{1cm} acyclicity to  hypergraphs.}
+		\item[] \hspace{1cm} acyclicity to hypergraphs.}
 
 	\end{itemize}
 \end{minipage}
 \begin{minipage}{.39\linewidth}
 \centering
-\input{figures/hypergraph.tex}
+\begin{figure}[htpb]
+	\centering
+	\input{figures/hypergraph.tex}
+	\caption{\tiny https://tex.stackexchange.com/a/1195/163902}%
+\end{figure}
 \end{minipage}
-\footnotetext[1]{$e_{|\geq i} := e \cap \{v_i, \dots v_n\}$.}
 \end{frame}
 
 \begin{frame}[t]{$\beta$-acyclic graphs}
 	\begin{itemize}
 		\item Let $\rho := v_1, \dots v_n$ be an enumeration of the vertices.
-		\uncover<2->{\item $\rho$ is a $\beta$-elimination, if for all}
+		\uncover<2->{\item $\rho$ is a $\beta$-elimination, if for all\footnote[1]{$e_{|\geq i} := e \cap \{v_i, \dots v_n\}$.}}
 		\uncover<3->{\item[] \hspace{1cm}$e_1, e_2 \in E(\mathcal{H})$ and $v_i \in e_1 \cap e_2$,
 		\item[]\hspace{1cm}$e_{1|\geq i} \subseteq e_2$ or $e_{2|\geq i} \subseteq e_1$.}
 		\uncover<4->{\item A hypergraph is $\beta$-acyclic, if it admits a $\beta$-elimination.}

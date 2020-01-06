@@ -9,7 +9,7 @@
 		\resizebox{.6\columnwidth}{!}{
 		\input{figures/subgraph.tex}
 		}
-		\caption{Note that $e_2 \notin H^{v_2}_{e_3}$ meanwhile $e_2 \in H^{v_3}_{e_3}$}%
+		\uncover<4->{\caption{Note that $e_2 \notin H^{v_2}_{e_3}$ meanwhile $e_2 \in H^{v_3}_{e_3}$}}
 		\label{fig:name}
 	\end{figure}
 \end{frame}
@@ -64,34 +64,44 @@
 
 \begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
 	\begin{itemize}[<+->]
-	\item The hyper graph of a CNF-formula:
+	\item The hypergraph of a CNF-formula:
 	\item[]\hspace{1cm}Variables of each clause correspond to an edge.
 	\item[]\hspace{1cm}Two clauses might correspond to the same edge.
 	\item A $\beta$-acyclic CNF-formula F is given.
-	\item Let $\mathcal{H}$ be the hyper graph of $F$.
+	\item Let $\mathcal{H}$ be the hypergraph of $F$.
 	\item Let $v_1, \dots v_n$ be an elimination order in $\mathcal{H}$.
-	\item Let {\color{blue}$F^x_e$} be a subformula of $F$ that corresponds to $\mathcal{H}^x_e$,
-	\item[]\hspace{1cm}i.e. $C \in F^x_e$, if $\mathrm{VAR}(C) \in \mathcal{H}^x_e$.
+	\item Let {\color{blue}$F^x_e$} be the subformula of $F$ that corresponds to $\mathcal{H}^x_e$,
+
+	\hspace{1cm}i.e. $C \in F^x_e$, if $\mathrm{VAR}(C) \in \mathcal{H}^x_e$.
 	\item For a clause $C$, the partial assignment {\color{blue}$\tau_C$} is defined over $\mathrm{VAR}(C)$ as the only assignment that does not satisfy $C$,
 	\item[]\hspace{1cm}i.e. for $x \in C$, $\tau_C(x) = 1$ if and only if $x$ appears as a negative literal in $C$.
 	\item We define ${\color{blue}\tau^x_C} := \tau_{C|\geq x}$,
-	\item[]\hspace{1cm}i.e. $F[\tau^x_C]$ results from $F$ by removing all variables greater than $x$ from each clause.
+	\item[]\hspace{1cm}{\color{blue} $F[\tau^x_C]$} results from $F$ by removing all variables greater than $x$ from each clause.
 	\end{itemize}
 \end{frame}
 \begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
 	\begin{block}{Lemma (lemma 6)}
-		Let $x \neq x_1 \in \mathrm{VAR}(F)$ and let $y$ be the predecessor of $x$ for $<$.  Let $e \in \mathcal{H}$ and $\tau : (e \cap V_{\geq x}) \rightarrow \{0, 1\}$. Then either $F^x_e[\tau] \equiv 1$ or there exists $U \subseteq \mathcal{H}^x_e$ such that 
+		Let $x \neq x_1 \in \mathrm{VAR}(F)$ and let $y$ be the predecessor of $x$ for $<$. Let $e \in \mathcal{H}$ and $\tau : (e \cap V_{\geq x}) \rightarrow \{0, 1\}$. Then either $F^x_e[\tau] \equiv 1$ or there exists $U \subseteq \mathcal{H}^x_e$ such that 
 		$$ F^x_e[\tau] \equiv \bigwedge\limits_{g \in U} F^y_g[\tau^y_{C_g}],$$
-		where $C_g in F^x_e$ such that $\mathrm{C_g} = g$.
+		where $C_g$ is some clause in $F^x_e$ such that $\mathrm{VAR}(C_g) = g$.
+		
+		Moreover, all and-gates are decomposable and $U$ can be computed in polynomial time.
 	\end{block}
-	\pause
+\end{frame}
+\begin{frame}[t]{Solving \#SAT in $\beta$-acyclic graphs}
+	\vspace{-1cm}
+	\begin{center}
+		$$ F^x_e[\tau] \equiv \bigwedge\limits_{g \in U} F^y_g[\tau^y_{C_g}],$$
+	\end{center}
 	Proof sketch.
 	\begin{itemize}[<+->]
-		\item Let $A$ be the set of all edges not satisfied by $\tau$. 
-		\item For each clause $C$ such that $\mathrm{VAR}(C) \notin A, \tau \models C$.
+		\item Let $A$ be the set edges $g$, where $\tau \not \models C_g$ for some {\color{gray} \textit{corresponding}} $C_g$.
+		\item For each clause $C$ such that $\mathrm{VAR}(C) \notin A$ we have $\tau \models C$.
 		\item Choose $U$ as the set of "maximal" edges $g \in A$,
-		\item[]\hspace{1cm}i.e. $g \not \subseteq \mathcal{H}^y_f$ for all $f \in A$.
-		\item $U$ can be computed in polynomial time, is decomposable and for each $f \in A$, there is $g \in U$ sch that $f \in \mathcal{H}^y_g$
+		\item For each $f \in A$, there is $g \in U$ such that $f \in \mathcal{H}^y_g$.
+		\item[]\hspace{1cm}i.e. $g \not \subseteq \mathcal{H}^y_f$ for all $f \in A$, $f \neq g$.
+		\item $U$ can be computed in polynomial time.
+		\item The edges in $U$ are pairwise disjoint. Hence, the and-gate is  decomposable. 
 	\end{itemize}
 \end{frame}
 
@@ -107,7 +117,7 @@
 
 	\pause
 	Proof sketch. Let $\tau_1 := \tau^x_C \cup \{x \mapsto 1\}$ and $\tau_0 := \tau^x_C \cup \{x \mapsto 0\}$.
-	$$F^x_{\mathrm{VAR}(C)}[\tau^x_C] =  (x \land F^x_{\mathrm{VAR}(C)}[\tau_1]) \lor (\lnot x \land F^x_{\mathrm{VAR}(C)}[\tau_0])$$	
+	$$F^x_{\mathrm{VAR}(C)}[\tau^x_C] = (x \land F^x_{\mathrm{VAR}(C)}[\tau_1]) \lor (\lnot x \land F^x_{\mathrm{VAR}(C)}[\tau_0])$$	
 		Apply lemma 6 on each of the terms.
 \end{frame}
 
@@ -123,7 +133,7 @@
 		\item Construct $D_i$ inductively over $i$.
 		\item For an edge $e$, distinguish the cases whether $v_i \in e$ or not.
 		\item For $i=1$,
-		\item[]\hspace{1cm}$v_1 \notin e$:  $F^{v_1}_e[\tau_C] = 0$.
+		\item[]\hspace{1cm}$v_1 \notin e$: $F^{v_1}_e[\tau_C] = 0$.
 		\item[]\hspace{1cm}$v_1 \in e$: $F^{v_1}_e \in \{1, v_1, \lnot v_1\}$.
 	\end{itemize}
 \end{frame}
@@ -134,7 +144,7 @@
 		\item If $v_{i+1} \in e$, then by corollary 7 we can compute $F^{x_{i+1}}_e$ by adding a decision gate and (two) fanin at most $\mathcal{H}$ decomposable and-gates.
 		
 		\item[]\hspace{1cm}For each other terms from corollary 7 there is already a gate in $D_i$ that computes this term by induction hypothesis. 
-		\item For $e = \max\mathcal{H}$ and a clause $C$ such that $\mathrm{VAR}(C) = e$,  we have $\mathcal{H}^{v_n}_e = \mathcal{H}$ and $\tau^{x_n}_{\mathrm{VAR}(C)} = \emptyset$, hence there is a gate in $D_n$ computing $F^{x_n}_e[\tau_C] = F$.
+		\item For $e = \max\mathcal{H}$ and a clause $C$ such that $\mathrm{VAR}(C) = e$, we have $\mathcal{H}^{v_n}_e = \mathcal{H}$ and $\tau^{x_n}_{\mathrm{VAR}(C)} = \emptyset$, hence there is a gate in $D_n$ computing $F^{x_n}_e[\tau_C] = F$.
 		\item We add at most 7 gates per edges per vertex.
 	\end{itemize}
 
