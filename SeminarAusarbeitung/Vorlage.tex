@@ -1,0 +1,62 @@
+% Vorlage für Seminar-Ausarbeitungen
+%
+% Dateiname: Vorlage.tex
+% zuletzt geändert: 11. Februar 2016
+% Autorin: Nicole Schweikardt
+
+% Definition der Dokument-Klasse, in diesem Falle die Klasse SeminarAusarbeitung,
+% die in der Datei SeminarAusarbeitung.cls bereitgestellt wird
+\documentclass{SeminarAusarbeitung}
+
+\usepackage{xcolor}
+% Festlegen der Informationen zu Titel, Autor, Seminar, Semester, Seminarleitung, Institut, Universität
+\title{Knowledge compilation and \#SAT}
+\author{Narek Bojikian}
+\seminar{Aktuelle Themen der theoretischen Informatik}
+\semester{Wintersemester 2019/~2020}
+\leitung{Prof.\ Dr.\ Christoph Berkholz} 
+\institut{Institut für Informatik}
+\universitaet{Humboldt-Universität zu Berlin}
+
+% Hier beginnt das eigenliche Dokument
+\begin{document}
+
+% Erstellung des Dokument-Titels. Dabei werden die Informationen zu Titel, Autor etc. von oben verwendet.
+% Das Aussehen des Titels ist in SeminarAusarbeitung.cls festgelegt
+\maketitle
+
+% Zusammenfassung/Abstract
+{{\color{red}\Huge todo} \color{blue}\Large 
+\begin{itemize}
+\item Add abstract.
+\item Add stucture.
+\item A paper written by? authored from? from? 
+\item Check the date.
+\item add reference to the paper in abstract
+\end{itemize}
+}
+\begin{abstract}
+	In this report, we summarize the paper "Understanding the complexity of
+	\#SAT using knowledge compilation" by Florent Capeli, 2018. We focus on
+	the points presented and discussed during the seminar on 08.01.2020.
+	More specifically, the paper is divided in to two parts. In the first of
+	which, the author designs an efficient algorithm for the given problem
+	using DPLL method, used to implement a practical solver for the \#SAT
+	problem. In the second part, the author generalizes another schema, that
+	had been used before to prove efficient algorithms for this problem on
+	specific classes of formulas. In this paper, the author proves that this
+	schema has a super-polynomial running time on this specific class of
+	formulas.  We concentrate on the efficient algorithm presented in the
+	paper and highlight its step, and we suffice to list the results that
+	yield a lower-bound on the running time of the other
+	method.
+\end{abstract}
+
+\section{Background}
+\section{Preliminaries}
+\section{An efficient algorithm - DPLL}
+\section{Equivalent structured d-DNNF - Lower-bounds}
+\section{Conclusion}
+
+\end{document}
+
