@@ -9,7 +9,6 @@
 \documentclass{SeminarAusarbeitung}
 
 \usepackage{xcolor}
-% Festlegen der Informationen zu Titel, Autor, Seminar, Semester, Seminarleitung, Institut, Universität
 \title{Knowledge compilation and \#SAT}
 \author{Narek Bojikian}
 \seminar{Aktuelle Themen der theoretischen Informatik}
@@ -18,20 +17,17 @@
 \institut{Institut für Informatik}
 \universitaet{Humboldt-Universität zu Berlin}
 
-% Hier beginnt das eigenliche Dokument
 \begin{document}
 
-% Erstellung des Dokument-Titels. Dabei werden die Informationen zu Titel, Autor etc. von oben verwendet.
-% Das Aussehen des Titels ist in SeminarAusarbeitung.cls festgelegt
 \maketitle
 
-% Zusammenfassung/Abstract
 {{\color{red}\Huge todo} \color{blue}\Large 
 \begin{itemize}
 \item Add abstract.
 \item Add stucture.
 \item A paper written by? authored from? from? 
 \item Check the date.
+\item fill [todo] and check \\cite tags
 \item add reference to the paper in abstract
 \end{itemize}
 }
@@ -44,18 +40,82 @@
 	using DPLL method, used to implement a practical solver for the \#SAT
 	problem. In the second part, the author generalizes another schema, that
 	had been used before to prove efficient algorithms for this problem on
-	specific classes of formulas. In this paper, the author proves that this
-	schema has a super-polynomial running time on this specific class of
-	formulas.  We concentrate on the efficient algorithm presented in the
-	paper and highlight its step, and we suffice to list the results that
-	yield a lower-bound on the running time of the other
-	method.
+	specific classes of formulas. He proves that this schema has a
+	super-polynomial running time on this specific class of formulas.  We
+	concentrate on the efficient algorithm presented in the paper and
+	highlight its steps, and we suffice to list the results that yield a
+	lower-bound on the running time of the other method.
 \end{abstract}
 
 \section{Background}
+The \#SAT problem is the problem of finding the number of satisfying assignments
+of a given formula.  The very related SAT problem, which targets the question
+whether a given formula admits a satisfying assignment, has been one of the most
+studied problems in theoretical computer science. The interest in this problem
+increased drastically since the appearance of Cook-Levin theorem \cite{} [todo],
+which states that SAT is an NP-hard problem.  This theorem has been prominent in
+theoretical computer science ever since. One of the results of the theorem is
+that a problem is NP-hard if it admits a polynomial reduction to SAT. This
+inspired a follow up by Karp \cite{} [todo] and many other results that
+initiated a new era of theoretical computer science. The interest in SAT and
+NP-completeness however, influenced an increasing interest in a very related
+class, namely \#P, which is the class of counting the number of certificates for
+a balanced P problem. Clearly problems that are complete for \#P are at least as
+hard as NP-complete problems, since NP is equivalent to the existential class of
+P, namely $\exists$P. Interestingly, \#SAT problem is complete for \#SAT.  Again
+this resulted in an increasing interest in the \#SAT problem. Among others,
+counting the perfect matchings in a graph and computing the permanent of a
+matrix are also complete for the \#P class and hence, any breakthrough in
+solving \#SAT will have a great impact on the solvablility of these problems.
+
+On the other hand, different approaches have been developed to tackle this
+problem. On one side, there has been an interest in practical solvers, ones that
+might not yield efficient bound in theory, but have proven themselves efficient
+in practice. An example of which, is the DPLL solver. The idea of the solver is
+to simplify the formula and to branch over variables to result in simpler
+formulas. Careful cashing and choice of variables is essential for an efficient
+solver. However, for many classes of formulas, this method can be quite
+inefficient for carefully designed formulas. That is why this method had merely
+been used in practice. On the other hand, Some approaches has been designed to
+approach problems from the theoretical perspective. By restricting the classes
+of formulas, some methods have proven efficient for solving \#SAT on these
+formulas. For example in .. \cite{} [todo] .... However, the main goal of the
+targeted paper is to show that the practical method can be more efficient even
+in theory for some specific classes of formulas and thereby we should not
+underestimate the method when approaching new classes of formulas. More
+specifically, the author shows in this paper, that using the techniques from
+DPLL, \#SAT on $\beta$-acyclic formulas can be done in Polynomial time,
+meanwhile the standard theoretical technique has a super-polynomial lower-bound
+on its running time.
+
+A bit deeper into details, the theoretical techniques starts by building a
+simpler formula equivalent to the input with useful properties and then solves
+the problem on the resulting formula using dynamic programming. The paper shows
+a subset of $\beta$-acyclic formulas such that any equivalent formula with that
+specific set of properties has super-polynomial size and hence the method can
+not be run in polynomial time. In contrast, the efficient method will also make
+use of dynamic programming but it starts with finding an efficient order of the
+vertices.
+
+We start the report with a set of definitions that introduces all the concepts,
+the structures and the ideas that will be used later in the report. Similar to
+the presentation, we follow that with a brief introduction to $\beta$-acyclic
+graph and list some useful properties of these graphs, that will show useful
+later in the report. The third section contains the main lemmas that yield the
+main result of the paper (own opinion) with brief sketch of the proofs. The
+forth section is a list of results that yield the lower bounds on the
+theoretical technique with according references. We conclude with a brief
+summary of the results and what we learn from them.
+
 \section{Preliminaries}
-\section{An efficient algorithm - DPLL}
-\section{Equivalent structured d-DNNF - Lower-bounds}
+\subsection{Boolean formulas and assignments}
+\subsection{Structured Formulas}
+\subsection{Graphs and Hypergraphs}
+
+\section{DPLL and solving \#SAT efficiently}
+
+\section{Structured d-DNNF - Lower-bounds for the general approach}
+
 \section{Conclusion}
 
 \end{document}
