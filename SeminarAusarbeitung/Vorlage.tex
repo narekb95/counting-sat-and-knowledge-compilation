@@ -59,8 +59,9 @@ that a problem is NP-hard if it admits a polynomial reduction to SAT. This
 inspired a follow up by Karp \cite{} [todo] and many other results that
 initiated a new era of theoretical computer science. The interest in SAT and
 NP-completeness however, influenced an increasing interest in a very related
-class, namely \#P, which is the class of counting the number of certificates for
-a balanced P problem. Clearly problems that are complete for \#P are at least as
+complexity class, namely the \#P which includes all the functions that count the
+number of certificates for polynomial balanced languages. 
+Clearly problems that are complete for \#P are at least as
 hard as NP-complete problems, since NP is equivalent to the existential class of
 P, namely $\exists$P. Interestingly, \#SAT problem is complete for \#SAT.  Again
 this resulted in an increasing interest in the \#SAT problem. Among others,
@@ -70,26 +71,28 @@ solving \#SAT will have a great impact on the solvablility of these problems.
 
 On the other hand, different approaches have been developed to tackle this
 problem. On one side, there has been an interest in practical solvers, ones that
-might not yield efficient bound in theory, but have proven themselves efficient
+might not yield efficient bounds in theory, but have proven efficient
 in practice. An example of which, is the DPLL solver. The idea of the solver is
 to simplify the formula and to branch over variables to result in simpler
-formulas. Careful cashing and choice of variables is essential for an efficient
-solver. However, for many classes of formulas, this method can be quite
-inefficient for carefully designed formulas. That is why this method had merely
-been used in practice. On the other hand, Some approaches has been designed to
-approach problems from the theoretical perspective. By restricting the classes
+formulas. Careful cashing and the choice of variables are essential for an efficient
+solver. However, for different classes of formulas, a special boolean formula of
+each of these classes can be designed in way that this method can be quite
+inefficient on these formulas. Therefore, this method was merely used for
+practical solvers and had not been used in theory to prove efficient upper-bounds on \#SAT.
+On the other hand, some approaches have been designed to
+tackle this problem from the theoretical perspective. By restricting the classes
 of formulas, some methods have proven efficient for solving \#SAT on these
-formulas. For example in .. \cite{} [todo] .... However, the main goal of the
-targeted paper is to show that the practical method can be more efficient even
+classes. For example in .. \cite{} [todo] .... However, the main goal of the
+presented paper is to show that the practical method can be more efficient even
 in theory for some specific classes of formulas and thereby we should not
 underestimate the method when approaching new classes of formulas. More
 specifically, the author shows in this paper, that using the techniques from
-DPLL, \#SAT on $\beta$-acyclic formulas can be done in Polynomial time,
+DPLL, \#SAT on $\beta$-acyclic formulas can be solved in Polynomial time,
 meanwhile the standard theoretical technique has a super-polynomial lower-bound
 on its running time.
 
-A bit deeper into details, the theoretical techniques starts by building a
-simpler formula equivalent to the input with useful properties and then solves
+A bit deeper into details, the theoretical techniques start by building a
+simpler formula equivalent to the input with useful properties and then solve
 the problem on the resulting formula using dynamic programming. The paper shows
 a subset of $\beta$-acyclic formulas such that any equivalent formula with that
 specific set of properties has super-polynomial size and hence the method can
@@ -98,14 +101,15 @@ use of dynamic programming but it starts with finding an efficient order of the
 vertices.
 
 We start the report with a set of definitions that introduces all the concepts,
-the structures and the ideas that will be used later in the report. Similar to
+the structures and the terms needed to complete the report. Similar to
 the presentation, we follow that with a brief introduction to $\beta$-acyclic
-graph and list some useful properties of these graphs, that will show useful
-later in the report. The third section contains the main lemmas that yield the
-main result of the paper (own opinion) with brief sketch of the proofs. The
+graphs and list some of their properties that will show useful
+later in this report. In the third section, we focus on the efficient algorithm
+for \#SAT in  $\beta$-acyclic graphs, where we list the main lemmas that yield the
+{\it main} (own opinion) result of the paper with brief sketches of the proofs. The
 forth section is a list of results that yield the lower bounds on the
 theoretical technique with according references. We conclude with a brief
-summary of the results and what we learn from them.
+summary of the results and the key takeaway of the paper.
 
 \section{Preliminaries}
 \subsection{Boolean formulas and assignments}
