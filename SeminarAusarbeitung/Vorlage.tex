@@ -17,6 +17,8 @@
 \institut{Institut für Informatik}
 \universitaet{Humboldt-Universität zu Berlin}
 
+\usepackage{bbold}
+
 \begin{document}
 
 \maketitle
@@ -57,26 +59,26 @@ inspired a follow up by Karp \cite{} [todo] and many other results that
 initiated a new era of theoretical computer science. The interest in SAT and
 NP-completeness however, influenced an increasing interest in a very related
 complexity class, namely the \#P which includes all the functions that count the
-number of certificates for polynomial balanced languages. 
-Clearly problems that are complete for \#P are at least as
-hard as NP-complete problems, since NP is equivalent to the existential class of
-P, namely $\exists$P. Interestingly, \#SAT problem is complete for \#SAT.  Again
-this resulted in an increasing interest in the \#SAT problem. Among others,
-counting the perfect matchings in a graph and computing the permanent of a
-matrix are also complete for the \#P class and hence, any breakthrough in
-solving \#SAT will have a great impact on the solvablility of these problems.
+number of certificates for polynomial balanced languages.  Clearly problems that
+are complete for \#P are at least as hard as NP-complete problems, since NP is
+equivalent to the existential class of P, namely $\exists$P. Interestingly,
+\#SAT problem is complete for \#SAT.  Again this resulted in an increasing
+interest in the \#SAT problem. Among others, counting the perfect matchings in a
+graph and computing the permanent of a matrix are also complete for the \#P
+class and hence, any breakthrough in solving \#SAT will have a great impact on
+the solvablility of these problems.
 
 On the other hand, different approaches have been developed to tackle this
 problem. On one side, there has been an interest in practical solvers, ones that
-might not yield efficient bounds in theory, but have proven efficient
-in practice. An example of which, is the DPLL solver. The idea of the solver is
-to simplify the formula and to branch over variables to result in simpler
-formulas. Careful cashing and the choice of variables are essential for an efficient
+might not yield efficient bounds in theory, but have proven efficient in
+practice. An example of which, is the DPLL solver. The idea of the solver is to
+simplify the formula and to branch over variables to result in simpler formulas.
+Careful cashing and the choice of variables are essential for an efficient
 solver. However, for different classes of formulas, a special boolean formula of
 each of these classes can be designed in way that this method can be quite
 inefficient on these formulas. Therefore, this method was merely used for
-practical solvers and had not been used in theory to prove efficient upper-bounds on \#SAT.
-On the other hand, some approaches have been designed to
+practical solvers and had not been used in theory to prove efficient
+upper-bounds on \#SAT.  On the other hand, some approaches have been designed to
 tackle this problem from the theoretical perspective. By restricting the classes
 of formulas, some methods have proven efficient for solving \#SAT on these
 classes. For example in .. \cite{} [todo] .... However, the main goal of the
@@ -98,18 +100,66 @@ use of dynamic programming but it starts with finding an efficient order of the
 vertices.
 
 We start the report with a set of definitions that introduces all the concepts,
-the structures and the terms needed to complete the report. Similar to
-the presentation, we follow that with a brief introduction to $\beta$-acyclic
-graphs and list some of their properties that will show useful
-later in this report. In the third section, we focus on the efficient algorithm
-for \#SAT in  $\beta$-acyclic graphs, where we list the main lemmas that yield the
-{\it main} (own opinion) result of the paper with brief sketches of the proofs. The
-forth section is a list of results that yield the lower bounds on the
-theoretical technique with according references. We conclude with a brief
-summary of the results and the key takeaway of the paper.
+the structures and the terms needed to complete the report. Similar to the
+presentation, we follow that with a brief introduction to $\beta$-acyclic graphs
+and list some of their properties that will show useful later in this report. In
+the third section, we focus on the efficient algorithm for \#SAT in
+$\beta$-acyclic graphs, where we list the main lemmas that yield the {\it main}
+(own opinion) result of the paper with brief sketches of the proofs. The forth
+section is a list of results that yield the lower bounds on the theoretical
+technique with according references. We conclude with a brief summary of the
+results and the key takeaway of the paper.
 
-\section{Preliminaries}
+\section{Preliminaries and notation}
 \subsection{Boolean formulas and assignments}
+\begin{itemize}
+	\item A Boolean formula $\varphi$ is a Boolean combination of a given
+		set of variables $\operatorname{Var}(\varphi) := x_1, \dots, x_n$ and
+		constants $\mathbb{0}$ and $\mathbb{1}$.
+	\item An assignment $\tau$ of $\varphi$ is a Boolean function that assigns to
+		each variable of the formula a Boolean value
+		$$\tau:\operatorname{Var}(\varphi) \rightarrow \{\mathbb{0,
+		1}\}.$$ We write $\tau \models \varphi$ for $\tau$ satisfies
+		$\varphi$.
+	\item An assignment $\tau$ satisfies a given formula $\varphi$ if and only
+		if $[\varphi]^{\tau} = \mathbb{1}$.
+		\item The set of all satisfying assignments of a formula
+			$\varphi$ is denoted by
+			$$\operatorname{Sat}(\varphi) := \{\tau; \tau \models
+			\varphi\}.$$
+	\item The satisfiablitiy problem (\textbf{SAT}): Given a Boolean formula
+		$\varphi$, find whether there exists an assignment $\tau$ of
+		$\varphi$ such that $\tau \models \varphi$. 
+	\item Counting SAT Problem (\textbf{\#SAT}): Given a Boolean formula
+		$\varphi$, compute the number of satisfying assignments of
+		$\varphi$.
+	\item A formula is in the negation normal form (\textbf{NNF}), if it
+		contains only disjunctions and conjunctions of positive or
+		negative literals.
+	\item A formula is in the conjunctive normal form (\textbf{CNF}), if it
+		is a conjunction of one or more clauses, where each clause is a
+		disjunction of one or more literals.
+	\item A Boolean formula $\varphi$ is in the decomposable negation normal
+		form (\textbf{DNNF}) (we call it a decomposable formula), if it
+		is in NNF and for each subformula of the form $\varphi' = \psi_1
+		\land \psi_2$ we have $\operatorname{Var}(\psi_1) \cap
+		\operatorname{Var}(\psi_2) = \emptyset$.
+	\item A Boolean formula $\varphi$ is in the deterministic decomposable
+		negation normal form (\textbf{d-DNNF}), if it is in DNNF and for
+		each subformula of the form $\varphi' = \psi_1 \lor \psi_2$ we
+		have $\operatorname{Sat}(\psi_1) \cap \operatorname{Sat}(\psi_2)
+		= \emptyset$.
+	\item A Bolean formula $\varphi$ is in the decision decomposable negation normal form
+		(\textbf{dec-DNNF}) if it is in DNNF and each disjunction of the
+		formula is of the form $\varphi' := (x \land \psi_1) \lor (\lnot
+		x \land \psi_2)$ for some variable $x \in \operatorname{Var}
+		(\varphi)$.
+\end{itemize}
+The last three definitions build the cornerstone of this report. The paper in
+its essence inspects writing a given CNF formula in either of the last two forms
+in addition to the structuredness constraint, that is soon to be introduced and
+proves upper- and lower-bounds of the sizes of the resulting formulas.
+
 \subsection{Structured Formulas}
 \subsection{Graphs and Hypergraphs}
 
