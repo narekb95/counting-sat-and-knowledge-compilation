@@ -8,7 +8,6 @@
 % die in der Datei SeminarAusarbeitung.cls bereitgestellt wird
 \documentclass{SeminarAusarbeitung}
 
-\usepackage{xcolor}
 \title{Knowledge compilation and \#SAT}
 \author{Narek Bojikian}
 \seminar{Aktuelle Themen der theoretischen Informatik}
@@ -18,6 +17,12 @@
 \universitaet{Humboldt-Universität zu Berlin}
 
 \usepackage{bbold}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tikz}
+
+\usetikzlibrary{topaths,calc}
 
 \begin{document}
 
@@ -112,6 +117,9 @@ results and the key takeaway of the paper.
 
 \section{Preliminaries and notation}
 \subsection{Boolean formulas and assignments}
+We begin this section with formal definitions of the problems introduced
+previously, and we introduce the normal forms we will encounter in this report
+along with the definition of a partial assignment.
 \begin{itemize}
 	\item A Boolean formula $\varphi$ is a Boolean combination of a given
 		set of variables $\operatorname{Var}(\varphi) := x_1, \dots, x_n$ and
@@ -139,6 +147,17 @@ results and the key takeaway of the paper.
 	\item A formula is in the conjunctive normal form (\textbf{CNF}), if it
 		is a conjunction of one or more clauses, where each clause is a
 		disjunction of one or more literals.
+	\item Given a formula $\varphi$ along with an assignment $\tau$ for
+		$\varphi$. Let $V \subseteq \operatorname{Var} (\varphi)$ be a
+		subset of variables. We define the partial assignment
+		$\tau_{|V}$ as the restriction of $\tau$ to $V$, i.e.
+		$$\tau_{|V}:V\rightarrow \{\mathbb{0}, \mathbb{1}\}:x\mapsto
+		\tau(x)$$.
+		
+		For a formula $\varphi$ in CNF and a partial assignment
+		$\tau_{|V}$, we say that $\tau_{|V}$ satisfies $\varphi$ if for
+		each clause $C$ in $\varphi$, there is a literal $a \in C$ where
+		$tau_{|V} \models a$.
 	\item A Boolean formula $\varphi$ is in the decomposable negation normal
 		form (\textbf{DNNF}) (we call it a decomposable formula), if it
 		is in NNF and for each subformula of the form $\varphi' = \psi_1
@@ -156,12 +175,96 @@ results and the key takeaway of the paper.
 		(\varphi)$.
 \end{itemize}
 The last three definitions build the cornerstone of this report. The paper in
-its essence inspects writing a given CNF formula in either of the last two forms
+its essence inspects writing a given CNF-formula in either of the last two forms
 in addition to the structuredness constraint, that is soon to be introduced and
 proves upper- and lower-bounds of the sizes of the resulting formulas.
 
+
 \subsection{Structured Formulas}
-\subsection{Graphs and Hypergraphs}
+In this section we will introduce structured formulas. Structuredness is defined
+over DNNF formulas. A structured formula admits an additional property that
+makes it easier to follow dependencies between its subformulas and to design a
+dynamic-programming solution for the \#SAT problem. This solution will be
+exploited deeper in the fourth section of this report.
+
+We define a vTree $T$ as a binary tree defined over a given formula $\varphi$,
+such that there is a one-to-one correspondence between the leaves of the tree
+and the variables of the formula $\operatorname{Var}(\varphi)$.  For a subtree
+$H$ of $T$, let us call $V(H)$ the set of variables of $\varphi$ corresponding
+to the leaves of $H$. Given a node $v$ in $T$, we denote the subtree rooted at
+$v$ in $T$ by $T_v$.  We say that the formula $\varphi$ respects the vTree $T$,
+if for each subformula $\varphi'$ of $\varphi$ of the form $\varphi' := \psi_1
+\land \psi_2$, there is a node $v$ in the tree with two children $v_1, v_2$,
+such that $\operatorname{Var}(\psi_1) \subseteq V(T_{v_1})$ and
+$\operatorname{Var}(\psi_2) \subseteq V(T_{v_2})$.
+A formula $\varphi$ is structured, if there is a vTree $T$ over $\varphi$ such
+that $\varphi$ respects $T$. An example of structured formula and a
+corresponding vTree can be seen in the figure below.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.2\linewidth]{../figures/vtree.eps}
+	\caption{A vTree respected by the formula $(x\land(y\lor z)) \lor (z {
+	\color{red}\land } \overline x)$. A conjunction and a corresponding node
+are depicted in red.}%
+	\label{fig:structed}
+\end{figure}
+
+\subsection{Hypergraphs and \texorpdfstring{$\beta$}{(beta)}-acyclic formulas}
+Hypergraphs are a well-studied generalization of the concept of graphs. Similar
+two an undirected graph, a hypergraph is defined as a set of vertices and edges,
+where edges are subsets of the vertices. In contrast to typical graphs,
+hypergrphs do not restrict the size of these subsets to two. Hence, each edge
+can span no vertex, one vertex or arbitrary many vertices. Most definitions over
+graphs such as paths, cycles and connectivity can be extended intuitively for
+hypergraphs. However, cyclicity in hypergraphs can be interpreted in different
+ways. Here we are interested in $\beta$-acyclic graphs. 
+
+More formally, a hypergraph $G$ is a set of vertices $V$ and a family of subsets
+over the vertices, we call them edges $E$. A walk in a hypergraph is a sequence
+of alternating vertices and edges that starts and ends with edges, such that
+each vertex is a common element for both edges preceding and following this
+vertex $(e_1, x_1, \dots, x_n, e_{n+1})$. We call a walk that never visits the
+same edge nor the same vertex twice a path. An example of a hyper graph is
+depicted in the figure below. [todo]
+
+In order to define $\beta$-acyclic graphs we need to define a
+$\beta$-elimination of a graph. Let $\rho := v_1, \dots, v_n$ be an enumeration
+of the vertices in the graph. We call $\rho$ a $\beta$-elimination, if for any
+two edge $e_1, e_2 \in E$ and $v_i \in e_1 \cap e_2$, holds $e_{1|\geq i}
+\subseteq e_2$ or $e_{2|\geq i} \subseteq e_1$, where $e_{\geq i} := \{v_j \in e:
+j \geq i\}$. A hypergrph $G$ is $\beta$-acyclic if it admits a
+$\beta$-elimination $\rho$.
+
+The hypergraph of a CNF-formula is the hypergraph defined over its variables,
+where each clause corresponds to an edge in the graph. More formally, given a
+CNF-formula $\varphi$, let $\mathcal{C} := \{C_1, \dots C_m\}$ be the set of all
+clauses in this formula. We define the hypergraph $G = (V, E)$ as the
+hypergrpah of this formula, where $V := \operatorname{Var}(\varphi)$ and $E :=
+\{\operatorname{Var}(C): C \in \mathcal{C}\}$. Note that the same edge might
+correspond to multiple clauses with identical variable sets and different
+(negated) literals. A Boolean formula $\varphi$ is $\beta$-acyclic if its
+hypergraph is.
+
+
+\subsection{Branch decomposition and MIM-width of a formula}
+Back to typical graphs, we define a branch decomposition $T$ of a graph $G = (V,
+E)$ as a binary rooted tree $T$, whose leaves are in one-to-one correspondence
+with $V$. The maximal-induced-matching width (MIM-width) of a node $t$ in $T$ is
+the size of the largest induced matching $M$ of $G[V\setminus V_t, V_t]$. As an
+example see the figure below. [todo] The MIM-width of a branch decomposition $T$
+$(\operatorname{mimw}(T))$ is the maximum MIM-width of its nodes
+$$\operatorname{mimw}(T) = \max\{\operatorname{mimw}(t):t\in V(T)\}.$$ The
+MIM-width of a graph $G$ is the minimum MIM-width of a branch decomposition of
+this graph.
+
+We define the incidence graph of a CNF-formula as the bipartite graph $G :=(A,
+B, E)$, where $A$ is the set of variables of the formula, $B$ the set of the
+clauses and a variable is adjacent to a clause if and only if there is a literal
+in this clause that corresponds to this variable $$\{x, C\} \in E \iff x \in
+\operatorname{Var}(C).$$ The MIM-width of a CNF-formula is the MIM-with of its
+incidence graph.
+
 
 \section{DPLL and solving \#SAT efficiently}
 
