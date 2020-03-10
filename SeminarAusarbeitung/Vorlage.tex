@@ -30,9 +30,11 @@
 
 {{\color{red}\Huge todo} \color{blue}\Large 
 \begin{itemize}
+\item add proof of main theorem
 \item A paper written by? authored from? from? 
 \item fill [todo] and check \\cite tags
 \item add reference to the paper in abstract
+\item describe dp and add conclusion
 \end{itemize}
 }
 \begin{abstract}
@@ -220,7 +222,7 @@ graphs such as paths, cycles and connectivity can be extended intuitively for
 hypergraphs. However, cyclicity in hypergraphs can be interpreted in different
 ways. Here we are interested in $\beta$-acyclic graphs. 
 
-More formally, a hypergraph $G$ is a set of vertices $V$ and a family of subsets
+More formally, a hypergraph $H$ is a set of vertices $V$ and a family of subsets
 over the vertices, we call them edges $E$. A walk in a hypergraph is a sequence
 of alternating vertices and edges that starts and ends with edges, such that
 each vertex is a common element for both edges preceding and following this
@@ -233,13 +235,13 @@ $\beta$-elimination of a graph. Let $\rho := v_1, \dots, v_n$ be an enumeration
 of the vertices in the graph. We call $\rho$ a $\beta$-elimination, if for any
 two edge $e_1, e_2 \in E$ and $v_i \in e_1 \cap e_2$, holds $e_{1|\geq i}
 \subseteq e_2$ or $e_{2|\geq i} \subseteq e_1$, where $e_{\geq i} := \{v_j \in e:
-j \geq i\}$. A hypergrph $G$ is $\beta$-acyclic if it admits a
+j \geq i\}$. A hypergrph $H$ is $\beta$-acyclic if it admits a
 $\beta$-elimination $\rho$.
 
 The hypergraph of a CNF-formula is the hypergraph defined over its variables,
 where each clause corresponds to an edge in the graph. More formally, given a
 CNF-formula $\varphi$, let $\mathcal{C} := \{C_1, \dots C_m\}$ be the set of all
-clauses in this formula. We define the hypergraph $G = (V, E)$ as the
+clauses in this formula. We define the hypergraph $H = (V, E)$ as the
 hypergrpah of this formula, where $V := \operatorname{Var}(\varphi)$ and $E :=
 \{\operatorname{Var}(C): C \in \mathcal{C}\}$. Note that the same edge might
 correspond to multiple clauses with identical variable sets and different
@@ -267,10 +269,204 @@ incidence graph.
 
 
 \section{DPLL and solving \#SAT efficiently}
+We start this section with a couple of lemmas targeting $\beta$-acyclic graphs.
+We aim to gather some useful properties of this class of graphs that we will
+exploit in our efficient algorithm afterwards. We begin with the statement of
+the main theorem of this part targeting $\beta$-acyclic graphs. After that we
+introduce a couple of lemmas that help to prove this theorem. Along this
+section, we assume $H$ is an arbitrary $\beta$-acyclic graph. We define an
+ordering over the edges of a $\beta$-acyclic graph derived from the
+$\beta$-elimination, where for two edges $e, f$, we have $e < f$ if and only if
+$\max\{e \Delta f\} \in f$, where $\Delta$ is the symmetric difference of two
+sets. This means the ordering is defined by the greatest order of a vertex
+appearing in one of the edges but not in the other. Now we denote by $H_e^x$ the
+subgraph of $H$ containing all edges reachable form $e$ within a walk having
+edges not greater than $e$ upon the previously defined ordering and vertices not
+greater than $x$. Note that the edges themselves might contain vertices greater
+than $x$. However, such vertices are only not allowed to be walk vertices.
+Mathematically speaking $f \in H_e^x$ if and only if there exits a walk $(e_1,
+x_1, \dots, x_l, e_{l+1})$, where $e_1 = e$, $e_{l+1} = f$, and $e_{i+1} < e$
+and $x_i \leq x$ for all $i \in [l]$. For an example see the figure below
+[todo]. We denote the vertex set of a subgraph $H'$ of $H$ by $V(H')$ and the
+set of edges by $E(H')$. Moreover, to ease the notation, we use the symbol of a
+hypergraph to denote its set of edges, considering the hypergraph as a family of
+subsets of vertices. Hence, we write $e\in H$ to denote $e \in V(H)$.
+
+
+\begin{theorem}\label{theo:hyper}
+	$V(H_e^x) \cap V_{\geq x} \subseteq e$ for any $x \in V$ and $e \in E$.
+\end{theorem}
+In order to prove this theorem we provide the following auxiliary lemmas.
+\begin{lemma}
+	Let $x, y \in V$ arbitrary and $e, f \in E$, if $V(H_e^x) \cap V(H_f^y)
+	\cap V_{\leq x} \neq \emptyset$, then $H_e^x  \subseteq H_f^y$.
+
+	In particular, for all $y \in V(H)$, if $e \in H_f^y$, then $H_e^y
+	\subseteq H_f^y$.
+\end{lemma}
+\begin{proof}[Proof sketch.]
+	Choose $g \in H_e^x$ arbitrarily. Per definition, there is a path from
+	$e$ to $g$ using edges at most $e$ and vertices at most $x$. Now choose
+	$z \in V(H_e^x) \cap V(H_f^y) \cap V_{\leq x}$ arbitrarily. Since $z \in
+	V(H_e^x)$ there is similar walk in $H$ from $e$ that ends in $z$. There
+	is also a walk in $H$ from $f$ to $z$ using edges at most $f$ and
+	vertices at most $y$. by concatenating these three paths we get a walk
+	in $H$ from $f$ to $g$. Since $e \leq f$ and $x \leq y$, the resulting
+	walk visits edges at most $f$ and vertices at most $y$. 
+\end{proof}
+
+\begin{lemma}
+	Let $e, f \in H$ two arbitrary edges such that $e < f$. If there exists a vertex $x \in V(H)$, such
+	that $x \in e \cap f$, then $e \cap V_{\geq x} \subseteq f$.
+\end{lemma}
+\begin{proof}[Proof sketch.]
+	Directly from the definition of a $\beta$-elimination and that $e < f$.
+\end{proof}
+
+We call a path \textbf{decreasing}, if $e_i > e_{i+1}$ for $i \in [l]$ and $x_i
+> x_{i+1}$ for all $i\in [l-1]$.
+\begin{lemma}\label{lem:decreasing}
+	Let $x \in V(H)$, $e \in H$ and $f \in H_e^x$. There exists a decreasing
+	path from $e$ to $f$ going through vertices smaller than $x$.
+\end{lemma}
+\begin{proof}[Proof sketch.]
+	There is a walk from $e$ to $f$ in $H$ going through edges at most $e$
+	and vertices at most $x$ by the definition of $H_e^x$. It can be shown
+	with contradiction, that a shortest path from $e$ to $f$ is decreasing.
+	Note that the existence of a walk implies the existence of a path since
+	we can "cut" the parts of the walk between two repetitions.
+\end{proof}
+
+Now we are ready to prove Theorem~\ref{theo:hyper}.
+\begin{proof}[Proof sketch(Theorem~\ref{theo:hyper})]
+	By induction over the length of a decreasing path, prove that for any
+	edge $f$ on a decreasing path from $e$, it holds that $f \cap V_{\geq x}
+	\subseteq e$. Using Lemma~\ref{lem:decreasing}, any edge in $H_e^x$ can
+	be reached by a decreasing path and proof is complete.
+\end{proof}
+An example for the Theorem can be seen in the Figure [todo] below. Intuitively,
+this theorem shows the dependence between subgraphs $H_e^x$ for different values
+of $e$ and $x$. Hence, for a dynamic programming solution on such subgraphs for
+a given problem, we should approach subgraphs with increasing values of $e$ and
+$x$.
+
+Now we introduce some more notation in order to provide the main algorithm of
+this section. Let $F$ be a given $\beta$-acylic CNF-formula with its hypergraph
+$H$. Let $v_1, \dots, v_n$ be a $\beta$-elimination of $H$. Let $F_e^x$ be the
+subformula of $F$ corresponding to $H_e^x$ for a vertex $x$ and an edge $e$ in
+$H$, i.e. all clauses of $F$ that correspond to edges in $H_e^x$. Mathematically
+speaking, $C \in F_e^x \iff \operatorname{Var}(C) \in H_e^x$. For a clause $C$
+we define the partial assignment $\tau_C$ over the variables of $C$ as the only
+partial assignment that does not satisfy $C$. We define $\tau_C^x :=
+\tau_{C|\geq x}$, which means $F_e^x[\tau_C^x]$ for $e := \operatorname{C}$
+results from $F_e^x$ by removing variables greater than $x$.
+
+\begin{lemma}
+	Let $x \neq x_1 \in \operatorname{Var}(F)$ and let $y$ be the
+	predecessor of $x$. Let $e \in H$ be arbitrary and $\tau:(e\cap V_{\geq
+	x}) \rightarrow \{\mathbb{0}, \mathbb{1}\}$. Then either $F_e^x[\tau]
+	\equiv 1$ or there exists $U \subseteq H_e^x$ such that
+	$$F_e^x[\tau] \equiv \bigwedge\limits_{g \in U} F_g^y \left[
+	\tau^y_{C_g} \right],$$
+	where $C_g$ is an arbitrary clause in $F_e^x$ such that
+	$\operatorname{Var}(C_g) = g$. Moreover, all and-gates are decomposable
+	and $U$ can be computed in polynomial time.
+\end{lemma}
+\begin{proof}[Proof sktech.]
+	Let $A$ be the set of all edges $g$, such that $\tau \not \models C_g$
+	for any corresponding $C_g$. Each clause $C$ such that
+	$\operatorname{Var}(C) \notin A$ is satisfied by $\tau$. Choose $U$ as
+	the set of "maximal" edges $g \in A$, such that for any edge $f \in A$
+	there is an edge $g \in U$ such that $f \in H_g^y$ and no edge in $U$ is
+	in the subgraph of any other edge, i.e. for all $f\in U$, $f \notin
+	H_g^y$ for all $g$ in $A$. $U$ can be computed by brute-force testing
+	all edges and building all subgraphs in polynomial time. The edges in
+	$U$ are pairwise disjoint, since we have chosen a maximal set. Hence,
+	the and-gate is decomposable.
+\end{proof}
+
+\begin{corollary}
+	Let $x \neq x_1 \in \operatorname{Var}(F)$ and let $y$ be the
+	predecessor of $x$. For every $C \in F$ there exists $U_0, U_1
+	\subseteq H_{\operatorname{Var}(C)}^x$ such that 
+	$$F_{\operatorname{Var}(C)}^x[\tau_C^x] \equiv (x \land
+	\bigwedge\limits_{g \in U_1}F_g^y[\tau_{C_g}^y]) \lor (\lnot x \land
+	\bigwedge\limits_{g \in U_2}F_g^y[\tau_{C_g}^y]).$$
+	Moreover, all conjunctions are decomposable and $U_0$, $U_1$ can be
+	computed in polynomial time.
+\end{corollary}
+\begin{proof}[Proof sktech.]
+	Let $\tau_1 := \tau_C^x \cup \{x \rightarrow \mathbb{1}\}$
+	and $\tau_2 := \tau_C^x \cup \{x \rightarrow \mathbb{0})\}$a.
+	$$F_{\operatorname{Var}(C)}^x[\tau_C^x] = 
+	(x \land F_{\operatorname{Var}(C)}^x[\tau_1])\lor
+	(\lnot x \land F_{\operatorname{Var}(C)}^x[\tau_0]).$$
+	Apply the previous lemma on each of the terms.
+\end{proof}
+
+Now we move to the main theorem of the section describing an algorithm to
+compute equivalent dec-DNNF of linear size with linear fanin for a given
+$\beta$-acyclic formula. This allows us to solve \#SAT in polynomial time as we
+shall see later.
+
+\begin{theorem}
+	Let $F$ be a $\beta$-acyclic CNF-formula. One can construct in
+	polynomial time in size(F) a dec-DNNF $D$ of size O(size(F)) and fanin
+	at most $|H|$ computing $F$.
+\end{theorem}
+\begin{proof}[Proof sktech.] [todo]
+\end{proof}
+
+[todo] {\color{red} concolude this part with the algorithm}
 
 \section{Structured d-DNNF - Lower-bounds for the general approach}
+In this subsection we list a couple of results that combined yield a
+super-polynomial loewr bound on the size of a structured equivalent d-DNNF. The
+paper reference two of the results from other papers (see references) and uses
+them to complete the proof.
 
+\begin{theorem}\cite{}[todo]
+	There exists an infinite family of $\beta$-acyclic hypergraphs of
+	incidence MIM-width $\Omega(n)$ where $n$ is the number of vertices of
+	the grpah.
+\end{theorem}
+
+Now we introduce the concept of $(Y,Z)$-triangle.
+Given a boolean function $r$ over $X$ and let $(Y, Z)$ be a partition of $X$. We
+call $r$ a $(Y, Z)$-rectangle, if and only if for every $\tau, \tau' \in \{0,
+1\}^X$ such that $\tau \models r$ and $\tau' \models r$ we have $(\tau|Y \cup
+\tau'|Z) \models r$.
+We call a set $R := \{ r_1, \dots, r_q \}$ a $(Y,Z)$-rectangle cover of a Boolean
+function $f$, if $\operatorname{sat}(f) = \bigcup_{i=1}^x \operatorname{sat}
+(r_i)$.
+
+\begin{theorem}\cite{}[todo]
+	Let $D$ be a DNNF on a set of variables $X$ respecting a vTree T. For
+	every vertex $t$ of $T$, there exists an $(X_t, X\setminus
+	X_t)$-rectangle cover of $D$ of size at most $|D|$, where $X_t =
+	\operatorname{Var}(T_t)$.
+\end{theorem}
+
+For a CNF-formula $F$, Let $\hat F := \{K \cup \{c_K\}|K\in F\}$, where we add a
+new variable $c_K$ to each clause $K$.
+\begin{theorem}
+	Let $F$ be a monotone formula of incidence MIM-width $k$. Any structured
+	DNNF computing $\hat F$ is of size at least $2^{k/2}$.
+\end{theorem}
+\begin{lemma}
+	Let $X = \{x_1, \dots, x_n\}$ and $Y=\{y_1, \dots y_n\}$ be two disjoint
+	sets of variables. The number of $(X, Y)$-rectangles needed to cover the
+	CNF-formula $F=\bigwedge_{i=1}^k (x_i \lor y_i)$ is at least $2^k$.
+\end{lemma}
+
+\begin{theorem}
+	There exists an infinite family $\mathcal{F}$ of $\beta$-acyclic
+	CNF-formulas such that for every $F\in \mathcal{F}$ having $n$
+	variables, there is no structured DNNF of size less than
+	$2^{\Omega(\sqrt n)}$ computing $F$.
+\end{theorem}
 \section{Conclusion}
+[todo]{\Huge \color{red} do not forget conclusion!!}
 
 \end{document}
 

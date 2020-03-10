@@ -90,14 +90,18 @@ Leitung: \@leitung \\
 % Standard-Theorem-Umgebungen: nummeriert (ohne *) und unnummeriert (mit *)
 
 \theoremstyle{plain}
-\newtheorem{satz}{Satz}
+\newtheorem{satz}{Satz}[section]
 \newtheorem*{satz*}{Satz}
 \newtheorem{proposition}[satz]{Proposition}
 \newtheorem*{proposition*}{Proposition}
+\newtheorem{theorem}[satz]{theorem}
+\newtheorem*{theroem*}{Theorem}
 \newtheorem{lemma}[satz]{Lemma}
 \newtheorem*{lemma*}{Lemma}
 \newtheorem{korollar}[satz]{Korollar}
 \newtheorem*{korollar*}{Korollar}
+\newtheorem{corollary}[satz]{Corollary}
+\newtheorem*{corollary*}{Corollary}
 \newtheorem{vermutung}[satz]{Vermutung}
 \newtheorem*{vermutung*}{Vermutung}
 
