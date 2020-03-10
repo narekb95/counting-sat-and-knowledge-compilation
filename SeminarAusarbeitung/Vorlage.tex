@@ -385,7 +385,7 @@ results from $F_e^x$ by removing variables greater than $x$.
 	the and-gate is decomposable.
 \end{proof}
 
-\begin{corollary}
+\begin{corollary}\label{cor:branch}
 	Let $x \neq x_1 \in \operatorname{Var}(F)$ and let $y$ be the
 	predecessor of $x$. For every $C \in F$ there exists $U_0, U_1
 	\subseteq H_{\operatorname{Var}(C)}^x$ such that 
@@ -404,20 +404,63 @@ results from $F_e^x$ by removing variables greater than $x$.
 	Apply the previous lemma on each of the terms.
 \end{proof}
 
-Now we move to the main theorem of the section describing an algorithm to
+Now we can move to the main theorem of this section describing an algorithm to
 compute equivalent dec-DNNF of linear size with linear fanin for a given
 $\beta$-acyclic formula. This allows us to solve \#SAT in polynomial time as we
 shall see later.
 
-\begin{theorem}
+\begin{theorem}\label{theo:dpll}
 	Let $F$ be a $\beta$-acyclic CNF-formula. One can construct in
 	polynomial time in size(F) a dec-DNNF $D$ of size O(size(F)) and fanin
 	at most $|H|$ computing $F$.
 \end{theorem}
-\begin{proof}[Proof sktech.] [todo]
+\begin{proof}[Proof sktech]
+	For each $i \in \{1, \dots, n\}$ we describe a dec-DNNF $D_i$ of fanin
+	at most $H$ such that for each $e\in H$ and $C \in F$ such that
+	$\operatorname{Var}(C) = e$ and $j \leq i$, there exists a gate in $D_i$
+	computing $F_e^{x_j}[\tau_C^{x_j}]$. $D_i$ can be constructed
+	inductively over $i$. For a fixed $i$, we distinguish for an edge $e$
+	whether  $x_i \in e$ or not.
+
+	For $i=1$ (induction begin) and for each edge $e \in H$, if $v_1 \notin
+	e$ then set $F_e^{v_1}[\tau_C^{e_1}] = 0$. Else, it must hold that
+	$F_e^{v_1}[\tau_C^{v_1}] \in \{1, v_1, \lnot v_1\}$ depending on the
+	corresponding clause $C$. In all cases we have $D_1$ is the union of all
+	these circuits over all edges $e$ and since each has constant size it
+	all has size $O(|H|)$. Note for some fixed $i$, given $D_j$ for all $j
+	\leq
+	i$, we compute $D_{i+1}$. Again for each edge $e$ if $v_{i+1} \notin e$,
+	then set $F_e^{x_{i+1}} = F_e^{x_i}$. Else, by
+	Corollary~\ref{cor:branch}, we can compute
+	$F_e^{x_{i+1}}[\tau_C^{x_{i+1}}$ be adding a decision gate and (two)
+	fanin at most $|H|$ decomposable and-gates. For each other term in
+	Corollary~\ref{cor:branch} there is already a gate in $D_i$ that
+	computes this term by induction hypothesis.
+
+	To complete the proof, choose $e$ to be maximal and a corresponding edge
+	$C$ along all edges and note
+	that $H_e^{v_n}[\tau_C^{v_n}] = H$ and hence, $F_e^{x_n}[\tau_C^{x_n}]
+	=F$. Since we add at most 7 gates per edge per vertex if the vertex
+	belong to that edge, the resulting Circuit has size $O(|H|)$.
 \end{proof}
 
-[todo] {\color{red} concolude this part with the algorithm}
+By this theorem, the \#SAT problem in a $\beta$-acyclic CNF-formula turns into
+counting satisfying assignment in a dec-DNNF formula. Note that the counting can
+be done along the dynamic programming, where we keep track for each
+$F_e^x[\tau_C^x]$ the number of satisfying assignments. Compared to the DPLL
+method discussed earlier, the DPLL method tries to write a given formula $F$ as
+a conjunction $F_1\land F_2$ where $F_1$ and $F_2$ have no common variables. If
+it succeeds, it returns $\#F = \#F_1 \cdot \#F_2$ where $\#F$ is the number of
+satisfying assignments of a formula $F$. Else it chooses some vertex $x$ and
+branches on $F[x\mapsto \mathbb{0}]$ and $F[x\mapsto \mathbb{1}]$ it then
+returns $\#F = \#F[x\mapsto \mathbb{0}] + \#F[x\mapsto \mathbb{1}]$. Note that
+no assignment can satisfy both terms at the same time. The choice of $x$ and
+choosing which values to keep in cache are decisive for the running time of the
+algorithm \cite{} [todo] . The algorithm resulting from Theorem~\ref{theo:dpll} corresponds to a
+backward call of this method where the order in which the DPLL chooses the
+variable is a reverse $\beta$-elimination. This shows that if the right
+elimination order was chosen, the practical tools for solving \#SAT can in
+theory solver the problem in polynomial time.
 
 \section{Structured d-DNNF - Lower-bounds for the general approach}
 In this subsection we list a couple of results that combined yield a
@@ -465,8 +508,19 @@ new variable $c_K$ to each clause $K$.
 	variables, there is no structured DNNF of size less than
 	$2^{\Omega(\sqrt n)}$ computing $F$.
 \end{theorem}
+
 \section{Conclusion}
-[todo]{\Huge \color{red} do not forget conclusion!!}
+In conclusion, we have seen two methods to approach the \#SAT problem. We have
+seen that the method that had been used frequently to prove efficient running
+time in some classes of graphs was inefficient for our targeted class with a
+lower-bound on the size of the resulting circuit. On the other hand, we have
+also seen that the practical method can turn efficient in theory if a right
+elimination order was chosen. One related open question studied in the given
+paper is whether all classes, where the theoretical method proved efficient, are
+also efficient using the practical Method DPLL by finding a corresponding
+elimination ordering and a suitable caching method. Note that the elimination
+ordering was natural in the $\beta$-acyclic formulas using a reversed
+$\beta$-elimination ordering.
 
 \end{document}
 
